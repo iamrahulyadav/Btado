@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/layoutDots"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dots_height"
+        android:layout_marginBottom="251dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:alpha=".5"
+        android:layout_above="@id/layoutDots"
+        android:background="@android:color/white"
+        android:id="@+id/view" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="79dp"
+        android:background="@drawable/logo" />
+
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        style="@style/FacebookLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/view"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:typeface="serif"
+        android:id="@+id/login"
+        android:textStyle="bold"
+        android:padding="17dp"
+        android:background="@drawable/border_button_style_white"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/login_button" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="I m New"
+        android:id="@+id/new_user"
+        android:textSize="17sp"
+        android:textColor="@color/colorPrimary"
+        android:padding="17dp"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:background="@drawable/full_button_style_white"
+        android:layout_alignBottom="@+id/login"
+        android:layout_alignEnd="@+id/login_button"
+        android:layout_marginRight="5dp" />
+
+</RelativeLayout>

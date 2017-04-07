@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+    >
+
+
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/imageView7"
+    android:background="@drawable/review"
+    android:layout_below="@+id/logo_img"
+    android:layout_alignParentStart="true"
+    android:layout_margin="10dp" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="Fifth Floor Avenue"
+    android:textColor="@color/black"
+    android:id="@+id/brand_name"
+    android:textSize="20sp"
+    android:layout_alignTop="@+id/imageView7"
+    android:layout_alignStart="@+id/imageView7"
+    android:layout_margin="10dp" />
+
+<RatingBar
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/ratingBar_home"
+    android:scaleX="0.40"
+    android:scaleY="0.40"
+    style="?android:attr/ratingBarStyleIndicator"
+    android:layout_marginTop="17dp"
+    android:layout_marginLeft="-35dp"
+    android:layout_alignTop="@+id/brand_name"
+    android:layout_alignParentStart="true" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:text="10"
+    android:id="@+id/review_count"
+    android:textSize="12sp"
+    android:layout_alignTop="@+id/ratingBar_home"
+    android:layout_toEndOf="@+id/ratingBar_home"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="5dp" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:text=" reviews"
+    android:id="@+id/textView10"
+    android:textSize="12sp"
+    android:layout_alignTop="@+id/review_count"
+    android:layout_toEndOf="@+id/review_count" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:text="Small Text"
+    android:id="@+id/review"
+    android:textSize="12sp"
+    android:layout_below="@+id/ratingBar_home"
+    android:layout_alignStart="@+id/brand_name" />
+
+<ImageView
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:id="@+id/brand_image"
+    android:layout_alignTop="@+id/brand_name"
+    android:layout_alignEnd="@+id/imageView7"
+    android:layout_marginEnd="16dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/imageView8"
+        android:background="@drawable/top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/imageView7"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/imageView9"
+        android:background="@drawable/map"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/imageView8"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:id="@+id/imageView10"
+        android:background="@drawable/photos"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/textView8"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Photos and Videos"
+        android:id="@+id/textView8"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_below="@+id/imageView9"
+        android:layout_alignStart="@+id/imageView10"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Reviews"
+        android:id="@+id/textView11"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/imageView10"
+        android:layout_alignStart="@+id/textView8"
+        android:layout_margin="10dp" />
+
+
+</RelativeLayout>
+
+
+
+

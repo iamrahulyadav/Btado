@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/fr_pp"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/fr_name"
+        android:layout_alignTop="@+id/fr_pp"
+        android:layout_toEndOf="@+id/fr_pp"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:id="@+id/linear"
+        android:orientation="horizontal"
+        android:layout_marginRight="10dp"
+        android:weightSum="3"
+        android:layout_below="@+id/fr_name"
+        android:layout_alignStart="@+id/fr_name">
+
+
+
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="5dp"
+
+                android:background="@drawable/ora_friends"
+                android:id="@+id/imageView12" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="06"
+                android:textSize="14sp"
+                android:id="@+id/fr_count"
+                android:layout_alignTop="@+id/imageView12"
+                android:layout_toEndOf="@+id/imageView12"
+                android:layout_marginLeft="5dp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@drawable/org_str"
+                android:id="@+id/imageView13"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12"
+                android:textSize="14sp"
+                android:id="@+id/rw_count"
+                android:layout_alignTop="@+id/imageView13"
+                android:layout_toEndOf="@+id/imageView13"
+                android:layout_alignBottom="@+id/imageView13"
+                android:layout_marginLeft="5dp" />
+
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.71">
+
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/orange_camera"
+                android:id="@+id/imageView14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_alignTop="@+id/imageView14"
+                android:layout_toEndOf="@+id/imageView14"
+                android:id="@+id/ph_count"
+                android:layout_alignBottom="@+id/imageView14"
+                android:layout_marginLeft="5dp"
+                android:text="23" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Small Text"
+        android:textSize="13sp"
+        android:id="@+id/adress"
+        android:layout_below="@+id/linear"
+        android:layout_alignStart="@+id/linear"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp" />
+
+
+</RelativeLayout>

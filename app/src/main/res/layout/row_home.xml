@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:background="@drawable/review"
+    android:layout_margin="5dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:src="@drawable/profile3"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/black"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hamza Bin Tariq"
+        android:textColor="@color/blue"
+        android:textSize="14sp"
+        android:id="@+id/user_name_home"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/profile_image"
+        android:layout_alignStart="@+id/adress"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  wrote for  "
+        android:textSize="12sp"
+        android:id="@+id/textView3"
+        android:layout_above="@+id/ratingBar_home"
+        android:layout_toEndOf="@+id/user_name_home" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar_home"
+        android:scaleX="0.45"
+        android:scaleY="0.45"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:rating="3"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/user_name_home"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lahore Country Club"
+        android:textColor="@color/blue"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:id="@+id/Page_home"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_toEndOf="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yesterday at 6:13 pm"
+        android:textSize="10sp"
+        android:id="@+id/time_home"
+        android:layout_alignParentTop="true"
+       android:layout_alignParentEnd="true"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="It is a test Comment "
+        android:textSize="14sp"
+        android:id="@+id/adress"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/ratingBar_home"
+        android:layout_toEndOf="@+id/profile_image"
+        android:layout_marginStart="17dp" />
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/reviews_layout"
+        android:layout_below="@id/comment_scroll"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:weightSum="5">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/like"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/likes_home" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Likes"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/unlike"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/dislike_home" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Dislikes"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+
+            >
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/usefull"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/usefull_home" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Usefull"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginLeft="15dp"
+            >
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="35dp"
+                android:background="@drawable/comments"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/comments_count" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Comments"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:id="@+id/share_view"
+            android:layout_marginLeft="15dp"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/share"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/share_home" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Share"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+    -->
+
+</RelativeLayout>
