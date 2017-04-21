@@ -31,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.bataado.Adapter.Home_Addapter;
+import com.cybussolutions.bataado.FireBase_Notifications.RegistrationIntentService;
 import com.cybussolutions.bataado.Fragments.Drawer_Fragment;
 import com.cybussolutions.bataado.Helper.CircleTransform;
 import com.cybussolutions.bataado.Model.Brands_Model;
@@ -224,6 +225,10 @@ public class HomeScreen extends AppCompatActivity {
 
             }
         });
+
+
+        Intent intent = new Intent(HomeScreen.this,RegistrationIntentService.class);
+        startService(intent);
 
 
     }

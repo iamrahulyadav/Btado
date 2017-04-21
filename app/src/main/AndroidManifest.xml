@@ -4,6 +4,10 @@
     package="com.cybussolutions.bataado">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.radioayah.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -39,6 +43,25 @@
         <activity android:name=".Activities.User_Profile" />
         <activity android:name=".Activities.User_Friends" />
         <activity android:name=".Activities.Find_Friends"></activity>
+
+
+        <service android:name="com.cybussolutions.bataado.FireBase_Notifications.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name="com.cybussolutions.bataado.FireBase_Notifications.MyFirebaseInstanceIDService" >
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.cybussolutions.bataado.FireBase_Notifications.RegistrationIntentService"
+            android:exported="false" />
+
     </application>
 
 </manifest>

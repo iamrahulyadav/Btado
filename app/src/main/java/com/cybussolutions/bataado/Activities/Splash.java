@@ -164,7 +164,7 @@ public class Splash extends AppCompatActivity {
 
 
                                     JSONObject url = new JSONObject(data);
-                                    String imageURL =  url.getString("url");
+                                    String imageURL ="https://graph.facebook.com/"+fb_id+"/picture?type=large";
 
                                     String email;
                                     if (!obj.isNull("email"))

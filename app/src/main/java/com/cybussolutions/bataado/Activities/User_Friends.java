@@ -80,7 +80,7 @@ public class User_Friends extends AppCompatActivity {
     public void getUserFriends()
     {
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...",	"Please wait ...", true);
+        ringProgressDialog = ProgressDialog.show(this, "",	"Please wait ...", true);
         ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
@@ -142,7 +142,6 @@ public class User_Friends extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError
             {
-
                 Map<String,String> params = new HashMap<>();
                 params.put("user_id",userId);
                 return params;
@@ -169,7 +168,6 @@ public class User_Friends extends AppCompatActivity {
 
             String res = object.getString("friends");
 
-
             JSONArray inner = new JSONArray(res);
 
 
@@ -187,11 +185,15 @@ public class User_Friends extends AppCompatActivity {
                 home_model.setBlock(innerobj.getString("address"));
 
 
-
                 friends_list.add(home_model);
 
                 // Toast.makeText(HomeScreen.this,home_model.getReviewid(), Toast.LENGTH_SHORT).show();
             }
+
+
+
+
+
 
 
 

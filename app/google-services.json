@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "955605605759",
+    "firebase_url": "https://bataadoo-31148.firebaseio.com",
+    "project_id": "bataadoo-31148",
+    "storage_bucket": "bataadoo-31148.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955605605759:android:9ed9231d4b30b1b2",
+        "android_client_info": {
+          "package_name": "com.cybussolutions.bataado"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955605605759-k4eoc7rkc3lt6ofcnsrif8e52di34o11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ81cVOnZNkA39wayjloj9cbN1uhpuWqo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -106,39 +106,11 @@ public class Find_Friends extends AppCompatActivity {
                     {
                         ringProgressDialog.dismiss();
 
+                        parseJson(response);
 
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
+                        friends_addapter = new Add_Friends_addapter(Find_Friends.this,friendsmodel);
 
-                            for (int i = 0; i < jsonArray.length(); i++)
-
-                            {
-                                JSONObject object = new JSONObject(jsonArray.getString(i));
-
-                                Home_Model home_model = new Home_Model();
-
-                                home_model.setUserid(object.getString("id"));
-                                home_model.setFirstname(object.getString("first_name"));
-                                home_model.setLastname(object.getString("last_name"));
-                                home_model.setProfilepic(object.getString("profile_pic"));
-
-
-                                friendsmodel.add(home_model);
-
-
-                            }
-
-                            friends_addapter = new Add_Friends_addapter(Find_Friends.this,friendsmodel);
-
-                            friends_list.setAdapter(friends_addapter);
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
+                        friends_list.setAdapter(friends_addapter);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -183,8 +155,13 @@ public class Find_Friends extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError
             {
 
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+                String id  = pref.getString("user_id","");
+
+
                 Map<String,String> params = new HashMap<>();
                 params.put("fb_id",ids);
+                params.put("user_id",id);
                 return params;
             }
         };
@@ -198,5 +175,72 @@ public class Find_Friends extends AppCompatActivity {
         requestQueue.add(request);
 
 
+    }
+
+    public  void parseJson(String response)
+    {
+
+        try {
+
+            JSONObject object =  new JSONObject(response);
+
+            String res = object.getString("user_info");
+
+            JSONArray inner = new JSONArray(res);
+
+            String user_status = object.getString("user_status");
+
+            JSONArray user_status_inner = new JSONArray(user_status);
+
+            HashMap<String,String> status = new HashMap<>();
+
+            for (int i= 0 ;i<user_status_inner.length();i++)
+            {
+                JSONObject innerobj = new JSONObject(user_status_inner.getString(i));
+
+                status.put(innerobj.getString("id"),innerobj.getString("status"));
+                // Toast.makeText(HomeScreen.this,home_model.getReviewid(), Toast.LENGTH_SHORT).show();
+            }
+
+            for (int i= 0 ;i<=inner.length();i++)
+            {
+                JSONObject innerobj = new JSONObject(inner.getString(i));
+
+                Home_Model home_model = new Home_Model();
+
+                home_model.setUserid(innerobj.getString("id"));
+                home_model.setEmail_brand(innerobj.getString("email"));
+                home_model.setFirstname(innerobj.getString("first_name"));
+                home_model.setLastname(innerobj.getString("last_name"));
+                home_model.setProfilepic(innerobj.getString("profile_pic"));
+                home_model.setBlock(innerobj.getString("address"));
+
+
+                if(status.containsKey(innerobj.getString("id")))
+                {
+                    String  sta = status.get(innerobj.getString("id"));
+                    home_model.setStatus(sta);
+                }
+                else {
+                    home_model.setStatus("2");
+                }
+
+                friendsmodel.add(home_model);
+
+                // Toast.makeText(HomeScreen.this,home_model.getReviewid(), Toast.LENGTH_SHORT).show();
+            }
+
+
+
+
+
+
+
+
+            // Toast.makeText(HomeScreen.this, outer, Toast.LENGTH_SHORT).show();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

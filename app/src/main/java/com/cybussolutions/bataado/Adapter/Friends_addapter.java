@@ -77,7 +77,7 @@ public class Friends_addapter extends ArrayAdapter<String>
         }
         String pp =home_model.getProfilepic();
 
-        if(pp.startsWith("https://fb"))
+        if(pp.startsWith("https://graph.facebook.com/"))
         {
             Picasso.with(getContext())
                     .load(pp)

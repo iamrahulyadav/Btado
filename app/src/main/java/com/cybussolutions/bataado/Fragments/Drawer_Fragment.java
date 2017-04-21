@@ -61,14 +61,12 @@ public class Drawer_Fragment extends Fragment {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_drawer, container, false);
 
-
         drawer_list = (ListView) v.findViewById(R.id.drawer_list);
         username = (TextView) v.findViewById(R.id.drawer_user_name);
         profile_image = (ImageView) v.findViewById(R.id.profile_image);
         photo = (TextView) v.findViewById(R.id.photos_count);
         friend = (TextView) v.findViewById(R.id.friends_count);
         reviews = (TextView) v.findViewById(R.id.review_count);
-
 
         String  strname="";
         final String pp;
@@ -115,7 +113,7 @@ public class Drawer_Fragment extends Fragment {
                     .into(profile_image);
         }
 
-        if(pp.startsWith("https://fb"))
+        if(pp.startsWith("https://graph.facebook.com/"))
         {
             Picasso.with(getContext())
                     .load(pp)

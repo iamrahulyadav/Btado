@@ -169,7 +169,7 @@ public class User_Profile extends AppCompatActivity {
                                         .into(pp);
                             }
 
-                            if(profile_pic.startsWith("https://fb"))
+                            if(profile_pic.startsWith("https://graph.facebook.com/"))
                             {
                                 Picasso.with(User_Profile.this)
                                         .load(profile_pic)

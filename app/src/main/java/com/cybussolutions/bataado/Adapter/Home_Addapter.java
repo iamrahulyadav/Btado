@@ -113,7 +113,7 @@ public class Home_Addapter extends ArrayAdapter<String>
 
 
 
-        if(pp.startsWith("https://fb"))
+        if(pp.startsWith("https://graph.facebook.com/"))
         {
             Picasso.with(getContext())
                     .load(pp)

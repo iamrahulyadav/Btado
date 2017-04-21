@@ -17,6 +17,8 @@ public class End_Points
     public static final String GET_CATEGORIES_DATA = BASE_URL+"getcategoriesData";
     public static final String GET_REVIEW_BRAND = BASE_URL+"reviews_brands";
     public static final String GET_COUNT = BASE_URL+"counts";
+    public static final String REFISTER_TOKEN = BASE_URL+"insertTokenid";
+    public static final String ADD_FRIEND = BASE_URL+"addFriends";
     public static final String GET_USER_REVIEWS = BASE_URL+"getUserReviw";
     public static final String GET_FB_FRIENDS = BASE_URL+"findUserFriends";
     public static final String GET_USER_FRIENDS = BASE_URL+"getUserFriends";
