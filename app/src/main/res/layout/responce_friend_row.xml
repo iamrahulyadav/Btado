@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/fr_pp"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/fr_name"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/fr_pp" />
+
+
+    <LinearLayout
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:weightSum="2"
+        android:layout_marginTop="10dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/thumbsupgreen"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:id="@+id/accept" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/thumbdownred"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:id="@+id/reject" />
+
+    </LinearLayout>
+
+</RelativeLayout>

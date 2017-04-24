@@ -204,6 +204,12 @@ public class Splash extends AppCompatActivity {
 
                                                         fb_ids +=datObj.getString("id")+",";
 
+                                                        SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+                                                        SharedPreferences.Editor editor = pref.edit();
+                                                        // Saving string
+                                                        editor.putString("user_friends", fb_ids);
+
+                                                        editor.apply();
 
                                                     }
                                                 } catch (JSONException e) {

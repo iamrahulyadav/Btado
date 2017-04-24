@@ -5,11 +5,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+
+import com.cybussolutions.bataado.Activities.Friend_Request;
 import com.cybussolutions.bataado.Activities.HomeScreen;
 import com.cybussolutions.bataado.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -24,18 +27,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
+        //showNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("body"),remoteMessage.getData().get("important"));
+        sendNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody(),"important");
+        SharedPreferences preferences = getSharedPreferences("Notifications",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
 
+        if (remoteMessage.getNotification().getTitle().startsWith("Friend Request"))
+        {
+            editor.putString("friend_request","active");
 
-            //showNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("body"),remoteMessage.getData().get("important"));
-            sendNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody(),"important");
+            editor.apply();
 
+        }
 
 
     }
 
     //This method is only generating push notification
     private void sendNotification(String title, String messageBody, String type) {
-        Intent intent = new Intent(this, HomeScreen.class);
+        Intent intent = null;
+
+        if (title.startsWith("Friend Request"))
+        {
+            intent = new Intent(this, Friend_Request.class);
+
+        }
+        else if(title.startsWith("message"))
+        {
+            // do message
+        }
         intent.putExtra("type", type);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -43,7 +63,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.logo)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)

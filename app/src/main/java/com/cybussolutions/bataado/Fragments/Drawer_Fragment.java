@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cybussolutions.bataado.Activities.Find_Friends;
+import com.cybussolutions.bataado.Activities.Friend_Request;
 import com.cybussolutions.bataado.Activities.Login;
 import com.cybussolutions.bataado.Activities.User_Friends;
 import com.cybussolutions.bataado.Activities.User_Profile;
@@ -147,6 +148,8 @@ public class Drawer_Fragment extends Fragment {
             }
         });
 
+        final SharedPreferences notification_pref = getContext().getApplicationContext().getSharedPreferences("Notifications", getContext().MODE_PRIVATE);
+        final SharedPreferences.Editor editor= notification_pref.edit();
 
 
         drawer_addapter = new draw_addapter(getActivity(),nameArray,images);
@@ -163,7 +166,11 @@ public class Drawer_Fragment extends Fragment {
 
                 if (position == 0 )
                 {
+                    editor.putString("friend_request","deactive");
+                    editor.apply();
 
+                    Intent intent = new Intent(getActivity(), Friend_Request.class);
+                    startActivity(intent);
 
 
                 }

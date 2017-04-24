@@ -180,7 +180,7 @@ public class SearchScreen extends AppCompatActivity {
 
                 if (error instanceof NoConnectionError)
                 {
-                    new SweetAlertDialog(getApplication(), SweetAlertDialog.ERROR_TYPE)
+                    new SweetAlertDialog(SearchScreen.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error!")
                             .setConfirmText("OK").setContentText("No Internet Connection ! ")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {

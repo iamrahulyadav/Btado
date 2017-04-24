@@ -22,5 +22,7 @@ public class End_Points
     public static final String GET_USER_REVIEWS = BASE_URL+"getUserReviw";
     public static final String GET_FB_FRIENDS = BASE_URL+"findUserFriends";
     public static final String GET_USER_FRIENDS = BASE_URL+"getUserFriends";
+    public static final String SEND_RESPONCE_REQUEST = BASE_URL+"getFriendResponce";
+    public static final String GET_ALL_FRIEND_REQUESTS = BASE_URL+"getAllRequest";
 
 }

@@ -2,7 +2,6 @@ package com.cybussolutions.bataado.Adapter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +22,11 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.cybussolutions.bataado.Activities.HomeScreen;
 import com.cybussolutions.bataado.Helper.CircleTransform;
 import com.cybussolutions.bataado.Model.Home_Model;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,18 +34,18 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class Add_Friends_addapter extends ArrayAdapter<String>
+public class Responce_Friends_addapter extends ArrayAdapter<String>
 {
     private static final int MY_SOCKET_TIMEOUT_MS = 10000 ;
     ProgressDialog ringProgressDialog;
     String userid;
     private ArrayList<Home_Model> arraylist;
     Activity context;
-    Button add_friend;
+    ImageView accpet,reject;
 
 
 
-    public Add_Friends_addapter(Activity context, ArrayList<Home_Model> list)
+    public Responce_Friends_addapter(Activity context, ArrayList<Home_Model> list)
     {
         super(context, R.layout.search_detail_row);
         this.context = context;
@@ -78,11 +73,12 @@ public class Add_Friends_addapter extends ArrayAdapter<String>
         View rowView;
 
         LayoutInflater inflater = context.getLayoutInflater();
-        rowView = inflater.inflate(R.layout.add_friend_row,null,true);
+        rowView = inflater.inflate(R.layout.responce_friend_row,null,true);
 
         final TextView username = (TextView) rowView.findViewById(R.id.fr_name);
         ImageView profile_pic = (ImageView) rowView.findViewById(R.id.fr_pp);
-         add_friend = (Button) rowView.findViewById(R.id.add_friend);
+        accpet = (ImageView) rowView.findViewById(R.id.accept);
+        reject = (ImageView) rowView.findViewById(R.id.reject);
 
         final Home_Model  home_model = arraylist.get(position);
         username.setText(home_model.getFirstname() +" "+ home_model.getLastname());
@@ -90,45 +86,26 @@ public class Add_Friends_addapter extends ArrayAdapter<String>
         SharedPreferences pref = getContext().getApplicationContext().getSharedPreferences("BtadoPrefs", getContext().MODE_PRIVATE);
         userid = pref.getString("user_id","");
 
-        final String[] status = {home_model.getStatus()};
-
-        if (status[0].equals("1"))
-        {
-            add_friend.setText("Friends");
-
-        }
-        else if (status[0].equals("0"))
-        {
-            add_friend.setText("Pending");
-
-        }
 
 
-        add_friend.setOnClickListener(new View.OnClickListener() {
+
+
+        accpet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(status[0].equals("2"))
-                {
-                    sendRequest(userid,home_model.getUserid());
-                    status[0] = "0";
-                    add_friend.setText("Pending");
-                }
-                else if(status[0].equals("0"))
-                {
-                    Toast.makeText(getContext(), "You have Already Sent Friend Request to "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
-                }
-
-                else if(status[0].equals("1"))
-                {
-                    Toast.makeText(getContext(), "You are Already Friends with "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
-                }
-
-
-
+                sendResponce(home_model.getUserid(),userid,"1");
 
             }
         });
+
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendResponce(home_model.getUserid(),userid,"2");
+            }
+        });
+
+
 
         String pp =home_model.getProfilepic();
 
@@ -166,34 +143,19 @@ public class Add_Friends_addapter extends ArrayAdapter<String>
     }
 
 
-    public void sendRequest(final String sender, final String reciever)
+    public void sendResponce(final String sender, final String reciever , final  String status)
     {
 
-        StringRequest request = new StringRequest(Request.Method.POST, End_Points.ADD_FRIEND,
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.SEND_RESPONCE_REQUEST,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        if(!(response.equals("")))
-                        {
+                        if (response.startsWith("1%updated") ||response.startsWith("0%updated")  ) {
+
                             new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                                    .setTitleText("Success!")
-                                    .setConfirmText("OK").setContentText("Frient request sent ")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sDialog) {
-                                            sDialog.dismiss();
-                                            add_friend.setText("Pending");
-                                        }
-                                    })
-                                    .show();
-
-                        }
-                        else
-                        {
-                            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Error!")
-                                    .setConfirmText("OK").setContentText("Some thing went wrong !! ")
+                                    .setTitleText("Success")
+                                    .setConfirmText("OK").setContentText("Your respoce has been updated")
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
@@ -202,8 +164,13 @@ public class Add_Friends_addapter extends ArrayAdapter<String>
                                         }
                                     })
                                     .show();
-                        }
 
+                        }
+                        else {
+
+                            Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+
+                        }
                     }
 
                 }, new Response.ErrorListener() {
@@ -249,8 +216,9 @@ public class Add_Friends_addapter extends ArrayAdapter<String>
             {
 
                 Map<String,String> params = new HashMap<>();
-                params.put("sender",sender);
-                params.put("reciever",reciever);
+                params.put("reciever",sender);
+                params.put("sender",reciever);
+                params.put("status",status);
 
                 return params;
             }
