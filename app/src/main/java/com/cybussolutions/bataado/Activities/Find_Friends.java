@@ -1,16 +1,14 @@
 package com.cybussolutions.bataado.Activities;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -23,7 +21,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.bataado.Adapter.Add_Friends_addapter;
-import com.cybussolutions.bataado.Adapter.Friends_addapter;
 import com.cybussolutions.bataado.Fragments.Drawer_Fragment;
 import com.cybussolutions.bataado.Model.Home_Model;
 import com.cybussolutions.bataado.Network.End_Points;
@@ -79,7 +76,9 @@ public class Find_Friends extends AppCompatActivity {
 
         ids = pref.getString("user_friends","");
 
-        ids = ids.substring(0, ids.length()-1);
+        if(!(ids.equals(""))){
+            ids = ids.substring(0, ids.length()-1);
+        }
 
         FindFriends();
 
@@ -102,6 +101,8 @@ public class Find_Friends extends AppCompatActivity {
                     @Override
                     public void onResponse(String response)
                     {
+
+
                         ringProgressDialog.dismiss();
 
                         parseJson(response);
