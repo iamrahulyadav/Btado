@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.cybussolutions.bataado.Helper.CircleTransform;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
+import com.cybussolutions.bataado.Utils.DialogBox;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -69,18 +70,18 @@ public class Login extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar = findViewById(R.id.app_bar);
         toolbar.setTitle("Log In");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
 
-        signUP = (Button) findViewById(R.id.signup);
-        login = (Button) findViewById(R.id.login);
-        username = (EditText) findViewById(R.id.userloginemail);
-        password = (EditText) findViewById(R.id.userloginpassword);
-        remCheckBox = (CheckBox) findViewById(R.id.checkBox);
+        signUP = findViewById(R.id.signup);
+        login = findViewById(R.id.login);
+        username = findViewById(R.id.userloginemail);
+        password = findViewById(R.id.userloginpassword);
+        remCheckBox = findViewById(R.id.checkBox);
 
         signUP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +102,7 @@ public class Login extends AppCompatActivity {
 
                     if(struser.equals(""))
                     {
-                        Toast.makeText(Login.this, "Username cannot be empty", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Email cannot be empty", Toast.LENGTH_SHORT).show();
                     }
                     else if(strpass.equals(""))
                     {
@@ -149,9 +150,11 @@ public class Login extends AppCompatActivity {
 
                         if(response.equals("false"))
                         {
-                            new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                            Toast.makeText(Login.this, "Incorrect Email or Password !!", Toast.LENGTH_SHORT).show();
+
+                           /* new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
                                     .setTitleText("Error!")
-                                    .setConfirmText("OK").setContentText("Incorrect User name or Password !! ")
+                                    .setConfirmText("OK").setContentText("Incorrect Email or Password!!")
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
@@ -159,7 +162,7 @@ public class Login extends AppCompatActivity {
 
                                         }
                                     })
-                                    .show();
+                                    .show();*/
                         }
                         else if(response.equals("0"))
                         {
@@ -167,7 +170,7 @@ public class Login extends AppCompatActivity {
                         }
                         else
                         {
-                            String name,email,profile_pic;
+                            String name,email,profile_pic,phone,address;
 
                             try {
 
@@ -178,6 +181,8 @@ public class Login extends AppCompatActivity {
                                 name += " "+object.getString("last_name");
                                 email = object.getString("email");
                                 profile_pic = object.getString("profile_pic");
+                                phone = object.getString("phone_number");
+                                address = object.getString("address");
 
 
 
@@ -186,8 +191,13 @@ public class Login extends AppCompatActivity {
                                 // Saving string
                                 editor.putString("user_id", userid);
                                 editor.putString("user_name",name);
+                                editor.putString("first_name",object.getString("first_name"));
+                                editor.putString("last_name",object.getString("last_name"));
                                 editor.putString("email",email);
                                 editor.putString("profile_pic",profile_pic);
+                                editor.putString("phone",phone);
+                                editor.putString("address",address);
+                                editor.putString("fb_user", "0");
 
                                 if(remCheckBox.isChecked())
                                 {
@@ -217,7 +227,9 @@ public class Login extends AppCompatActivity {
                 ringProgressDialog.dismiss();
                 if (error instanceof NoConnectionError)
                 {
-                    new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                    new DialogBox(Login.this, "No Internet Connection", "Error",
+                            "Error");
+                    /*new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error!")
                             .setConfirmText("OK").setContentText("No Internet Connection")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -227,12 +239,13 @@ public class Login extends AppCompatActivity {
 
                                 }
                             })
-                            .show();
+                            .show();*/
                 }
                 else if (error instanceof TimeoutError) {
 
-
-                    new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                    new DialogBox(Login.this, "Connection Time Out Error", "Error",
+                            "Error");
+                  /*  new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error!")
                             .setConfirmText("OK").setContentText("Connection Time Out Error")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -242,7 +255,7 @@ public class Login extends AppCompatActivity {
 
                                 }
                             })
-                            .show();
+                            .show();*/
                 }
             }
         })
@@ -317,8 +330,10 @@ public class Login extends AppCompatActivity {
 
                 if (error instanceof NoConnectionError)
                 {
-                    new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
+                    new DialogBox(Login.this, "No Internet Connection", "Error",
+                            "Error");
+                   /* new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Alert!")
                             .setConfirmText("OK").setContentText("No Internet Connection")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
@@ -327,13 +342,14 @@ public class Login extends AppCompatActivity {
 
                                 }
                             })
-                            .show();
+                            .show();*/
                 }
                 else if (error instanceof TimeoutError) {
 
-
-                    new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
+                    new DialogBox(Login.this, "Connection Time Out Error", "Error",
+                            "Error");
+                   /* new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Alert!")
                             .setConfirmText("OK").setContentText("Connection Time Out Error")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
@@ -342,7 +358,7 @@ public class Login extends AppCompatActivity {
 
                                 }
                             })
-                            .show();
+                            .show();*/
                 }
             }
         })
@@ -353,6 +369,7 @@ public class Login extends AppCompatActivity {
 
                 Map<String,String> params = new HashMap<>();
                 params.put("user_id",userid);
+                params.put("stalkerID",userid);
 
                 return params;
             }

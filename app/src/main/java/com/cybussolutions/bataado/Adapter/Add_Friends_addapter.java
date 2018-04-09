@@ -80,9 +80,9 @@ public class Add_Friends_addapter extends ArrayAdapter<String>
         LayoutInflater inflater = context.getLayoutInflater();
         rowView = inflater.inflate(R.layout.add_friend_row,null,true);
 
-        final TextView username = (TextView) rowView.findViewById(R.id.fr_name);
-        ImageView profile_pic = (ImageView) rowView.findViewById(R.id.fr_pp);
-         add_friend = (Button) rowView.findViewById(R.id.add_friend);
+        final TextView username = rowView.findViewById(R.id.fr_name);
+        ImageView profile_pic = rowView.findViewById(R.id.fr_pp);
+         add_friend = rowView.findViewById(R.id.add_friend);
 
         final Home_Model  home_model = arraylist.get(position);
         username.setText(home_model.getFirstname() +" "+ home_model.getLastname());
@@ -110,9 +110,11 @@ public class Add_Friends_addapter extends ArrayAdapter<String>
 
                 if(status[0].equals("2"))
                 {
-                    sendRequest(userid,home_model.getUserid());
                     status[0] = "0";
                     add_friend.setText("Pending");
+                    arraylist.get(position).setStatus("0");
+                    notifyDataSetChanged();
+                    sendRequest(userid,home_model.getUserid());
                 }
                 else if(status[0].equals("0"))
                 {
@@ -132,7 +134,7 @@ public class Add_Friends_addapter extends ArrayAdapter<String>
 
         String pp =home_model.getProfilepic();
 
-        if(pp.startsWith("https://graph.facebook.com/"))
+        if(pp.startsWith("https://graph.facebook.com/")|| pp.startsWith("https://scontent.xx.fbcdn.net/") || pp.startsWith("https://graph.facebook.com/"))
         {
             Picasso.with(getContext())
                     .load(pp)

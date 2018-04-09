@@ -9,28 +9,38 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Gainsboro">
+        android:background="@drawable/home_background">
+        <!--android:background="@color/Gainsboro">-->
 
         <include
             android:id="@+id/app_bar"
             layout="@layout/app_bar">
 
         </include>
-
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_above="@+id/fotter"
+            android:layout_below="@+id/app_bar" >
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listview"
             android:divider="@android:color/transparent"
-            android:dividerHeight="3.0sp"
+            android:dividerHeight="5.0sp"
             android:layout_below="@+id/app_bar"
             android:layout_above="@+id/fotter"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp">
 
         </ListView>
-
+        </android.support.v4.widget.SwipeRefreshLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -88,30 +98,63 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:id="@+id/logo_img"
-            android:background="@drawable/logo"
+            android:background="@drawable/bataado"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            />
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/noti_img"
+            android:background="@drawable/notif_icon"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_margin="5dp" />
-
-        <EditText
+            />
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="35dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/search_img"
+            android:background="@drawable/search_bar"
+            android:layout_alignParentTop="true"
+           android:layout_toLeftOf="@id/noti_img"
+            />
+        <SearchView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:id="@+id/search"
-            android:drawableLeft="@drawable/search_icon"
             android:paddingLeft="10dp"
             android:hint="  Search"
+            android:elevation="2dp"
+            android:queryHint="  Search"
             android:layout_alignTop="@+id/logo_img"
             android:layout_alignParentStart="true"
             android:layout_marginStart="70dp"
-            android:layout_toStartOf="@+id/logo_img"
-            android:background="@drawable/search"
-            android:layout_marginTop="5dp"
+            android:layout_toStartOf="@+id/noti_img"
+            android:background="#fff"
+            android:visibility="gone"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="35dp"
             android:layout_marginRight="10dp" />
 
-
+            <ListView
+                android:background="@color/White"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="35dp"
+                android:layout_below="@+id/search"
+                android:layout_marginStart="70dp"
+                android:layout_toStartOf="@+id/noti_img"
+                android:layout_alignTop="@+id/logo_img"
+                android:id="@+id/listview_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
     </RelativeLayout>
     <fragment
         android:id="@+id/fragment_navdrawer"
@@ -124,5 +167,13 @@
 
     </fragment>
 
-
+    <ListView
+        android:id="@+id/left_drawer"
+        android:layout_width="290dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:choiceMode="singleChoice"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="2dp"
+        android:background="#ffff"/>
 </android.support.v4.widget.DrawerLayout>

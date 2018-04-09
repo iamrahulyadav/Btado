@@ -1,6 +1,7 @@
 package com.cybussolutions.bataado.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -48,7 +49,7 @@ public class SearchScreen extends AppCompatActivity {
     ListView search_list;
     Drawer_Fragment drawerFragment = new Drawer_Fragment();
     private static final int MY_SOCKET_TIMEOUT_MS = 10000 ;
-    ImageView home_fotter;
+    ImageView home_fotter,profile_footer;
     EditText search;
     private ArrayList<Search_Model> category_list= new ArrayList<>();
     ArrayList<Search_Model> filteredLeaves;
@@ -58,9 +59,9 @@ public class SearchScreen extends AppCompatActivity {
         setContentView(R.layout.activity_search_screen);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("Search Screen");
+        final SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+        toolbar = findViewById(R.id.app_bar);
+        toolbar.setTitle("Categories");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -70,9 +71,10 @@ public class SearchScreen extends AppCompatActivity {
 
 
 
-        search_list = (ListView) findViewById(R.id.listview_search);
-        home_fotter = (ImageView) findViewById(R.id.home_fotter);
-        search = (EditText) findViewById(R.id.search);
+        search_list = findViewById(R.id.listview_search);
+        home_fotter = findViewById(R.id.home_fotter);
+        profile_footer = findViewById(R.id.profile_fotter);
+       // search = findViewById(R.id.search);
 
         getAllCategories();
 
@@ -96,14 +98,26 @@ public class SearchScreen extends AppCompatActivity {
         home_fotter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SearchScreen.this,HomeScreen.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
+//                Intent intent = new Intent(SearchScreen.this,HomeScreen.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
                 finish();
             }
         });
 
-
-        search.addTextChangedListener(new TextWatcher() {
+        profile_footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String pp = pref.getString("profile_pic","");
+                String strname = pref.getString("user_name","");
+                String strid = pref.getString("user_id","");
+                Intent intent= new Intent(SearchScreen.this, Account_Settings.class);
+                intent.putExtra("username", strname);
+                intent.putExtra("userProfile",pp);
+                intent.putExtra("userID",strid);
+                startActivity(intent);
+            }
+        });
+       /* search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -132,9 +146,9 @@ public class SearchScreen extends AppCompatActivity {
                         }
 
                 }
-                /*leaveDatas.clear();
+                *//*leaveDatas.clear();
                 leaveDatas.addAll(filteredLeaves);
-                leaves_adapter.notifyDataSetChanged();*/
+                leaves_adapter.notifyDataSetChanged();*//*
 
                 drawer_addapter = new search_model(SearchScreen.this,category_list);
 
@@ -147,7 +161,7 @@ public class SearchScreen extends AppCompatActivity {
 
 
             }
-        });
+        });*/
 
 
 
@@ -238,7 +252,7 @@ public class SearchScreen extends AppCompatActivity {
             JSONArray inner = new JSONArray(response);
 
 
-            for (int i= 0 ;i<=inner.length();i++)
+            for (int i= 0 ;i<inner.length();i++)
             {
                 JSONObject innerobj = new JSONObject(inner.getString(i));
 
@@ -246,6 +260,7 @@ public class SearchScreen extends AppCompatActivity {
 
                 search_model.setCategoryID(innerobj.getString("id"));
                 search_model.setCategoryName(innerobj.getString("category_name"));
+                search_model.setCatagoryLogo(innerobj.getString("category_logo"));
 
 
                 category_list.add(search_model);

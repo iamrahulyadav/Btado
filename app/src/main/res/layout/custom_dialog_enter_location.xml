@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/headingTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search By Category / Location"
+        android:textColor="#525050"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_line"/>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:textColorHint="#BFBFBF"
+        android:layout_height="wrap_content">
+
+        <AutoCompleteTextView
+            android:id="@+id/et_brand"
+            android:layout_width="match_parent"
+            android:hint="Brand / Category"
+            android:maxLines="15"
+            android:layout_height="wrap_content"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/Title"
+        android:layout_width="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:textColorHint="#BFBFBF"
+        android:layout_height="wrap_content">
+
+        <AutoCompleteTextView
+            android:id="@+id/et_post"
+            android:layout_width="match_parent"
+            android:hint="City"
+            android:maxLines="15"
+            android:layout_height="wrap_content"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Cancel"
+            android:textColor="#f50b22"
+            android:textSize="15sp"
+            android:id="@+id/btn_cancel"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="20dp"/>
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:id="@+id/post_btn"
+            android:padding="5dp"
+            android:text="  Proceed  "
+            android:textColor="@color/White"
+            android:background="@drawable/full_button_style_green"
+            android:layout_marginLeft="10dp"
+            android:layout_alignTop="@+id/brand_review"
+            android:layout_alignEnd="@+id/imageView2"
+            android:layout_marginRight="10dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

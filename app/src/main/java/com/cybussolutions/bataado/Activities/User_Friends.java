@@ -54,8 +54,8 @@ public class User_Friends extends AppCompatActivity {
         setContentView(R.layout.activity_user__friends);
 
 
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("My Friends");
+        toolbar = findViewById(R.id.app_bar);
+        toolbar.setTitle("Friends");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -68,7 +68,7 @@ public class User_Friends extends AppCompatActivity {
         userId = intent.getStringExtra("user_id");
 
 
-        friends_listView = (ListView) findViewById(R.id.friends_listview);
+        friends_listView = findViewById(R.id.friends_listview);
 
 
         getUserFriends();

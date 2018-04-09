@@ -1,6 +1,8 @@
 package com.cybussolutions.bataado.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +24,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
+import com.cybussolutions.bataado.Utils.DialogBox;
+import com.cybussolutions.bataado.Utils.FieldValidator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,19 +48,19 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
 
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("Sign Up with Bataa Do");
+        toolbar = findViewById(R.id.app_bar);
+        toolbar.setTitle("Sign Up");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
 
-        username = (EditText) findViewById(R.id.usersignupemail);
-        f_name = (EditText) findViewById(R.id.firstname);
-        l_name = (EditText) findViewById(R.id.userlastname);
-        password = (EditText) findViewById(R.id.usersignuppassword);
-        confirm = (EditText) findViewById(R.id.userconfirm_password);
-        signUP = (Button) findViewById(R.id.signup);
+        username = findViewById(R.id.usersignupemail);
+        f_name = findViewById(R.id.firstname);
+        l_name = findViewById(R.id.userlastname);
+        password = findViewById(R.id.usersignuppassword);
+        confirm = findViewById(R.id.userconfirm_password);
+        signUP = findViewById(R.id.signup);
 
         signUP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,31 +72,36 @@ public class SignUp extends AppCompatActivity {
                 strpass = password.getText().toString();
                 str_cnfrmpass = confirm.getText().toString();
 
-                if(str_cnfrmpass.equals(strpass))
-                {
-                    if(struser.equals("")||str_fname.equals("")||str_lname.equals("")||strpass.equals(""))
+
+                    if(struser.equals("")||str_fname.equals("")||str_lname.equals("")||strpass.equals("") || str_cnfrmpass.equals(""))
                     {
                         Toast.makeText(SignUp.this, "Required Fields are missing", Toast.LENGTH_SHORT).show();
+                    }else  if(!FieldValidator.ValidateEmail(SignUp.this, struser)){
+                        Toast.makeText(SignUp.this, "Invalid Email Address", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
+                        if(str_cnfrmpass.equals(strpass))
+                        {
                         Signup_User();
-                    }
-                }
-                else
-                {
-                    new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Passwords do not match")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
+                        }
+                        else
+                        {
+                            Toast.makeText(SignUp.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                          /*  new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Alert!")
+                                    .setConfirmText("OK").setContentText("Passwords do not match")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismiss();
 
-                                }
-                            })
-                            .show();
-                }
+                                        }
+                                    })
+                                    .show();*/
+                        }
+                    }
+
             }
         });
 
@@ -115,13 +124,14 @@ public class SignUp extends AppCompatActivity {
                 new Response.Listener<String>()
                 {
                     @Override
-                    public void onResponse(String response)
+                    public void onResponse(final String response)
                     {
                         ringProgressDialog.dismiss();
                         if(response.equals("") )
                         {
-                            new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Error!")
+                            Toast.makeText(SignUp.this, "Error Registering user", Toast.LENGTH_SHORT).show();
+                           /* new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Alert!")
                                     .setConfirmText("OK").setContentText("Error Registering user")
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
@@ -130,12 +140,13 @@ public class SignUp extends AppCompatActivity {
 
                                         }
                                     })
-                                    .show();
+                                    .show();*/
                         }
                         else if(response.equals("user Already Registerd with this Email ID"))
                         {
-                            new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Error!")
+                            Toast.makeText(SignUp.this, "User Already Registered with this Email.", Toast.LENGTH_SHORT).show();
+                           /* new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Alert!")
                                     .setConfirmText("OK").setContentText("User Already Registered with this Email ID ")
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
@@ -144,21 +155,35 @@ public class SignUp extends AppCompatActivity {
 
                                         }
                                     })
-                                    .show();
+                                    .show();*/
                         }
                         else {
-                            new SweetAlertDialog(SignUp.this, SweetAlertDialog.SUCCESS_TYPE)
+                           /* new SweetAlertDialog(SignUp.this, SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Success!")
                                     .setConfirmText("OK").setContentText("User Created Successfully ")
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
-                                            sDialog.dismiss();
-                                            finish();
+                                            sDialog.dismiss();*/
+                            new DialogBox(SignUp.this, "User Created Successfully ", "",
+                                    "SuccessSignUP");
+                                            SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = pref.edit();
+                                            // Saving string
+                                            editor.putString("total_reviews", "0");
+                                            editor.putString("total_photos","0");
+                                            editor.putString("total_friends","0");
+                                            editor.putString("user_id", response);
+                                            editor.putString("user_name",str_fname+" "+str_lname);
+                                            editor.putString("email",struser);
+                                            editor.putString("profile_pic","");
 
+
+                                            editor.apply();
+/*
                                         }
                                     })
-                                    .show();
+                                    .show();*/
                         }
                     }
 
@@ -187,6 +212,7 @@ public class SignUp extends AppCompatActivity {
                 params.put("fb_id","");
                 params.put("lname",str_lname);
                 params.put("password",strpass);
+                params.put("image","");
                 return params;
             }
         };

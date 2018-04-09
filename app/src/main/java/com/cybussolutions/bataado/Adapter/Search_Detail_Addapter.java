@@ -1,6 +1,8 @@
 package com.cybussolutions.bataado.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,7 @@ public class Search_Detail_Addapter extends ArrayAdapter<String>
 {
 
     private ArrayList<Home_Model> arraylist;
-    Activity context;
+    private Activity context;
 
 
 
@@ -49,8 +51,10 @@ public class Search_Detail_Addapter extends ArrayAdapter<String>
 
 
 
+    @SuppressLint("InflateParams")
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent)
     {
         View rowView;
 
@@ -68,7 +72,7 @@ public class Search_Detail_Addapter extends ArrayAdapter<String>
         String adressing =home_model.getAdress()+" "+home_model.getBlock()+" "+home_model.getArea();
         adress.setText(adressing);
         int testrating;
-        if(home_model.getRating() == null)
+        if(home_model.getRating() == null || home_model.getRating().equals("null") || home_model.getRating().equals(""))
         {
             testrating= 0;
         }
@@ -81,12 +85,19 @@ public class Search_Detail_Addapter extends ArrayAdapter<String>
 
 
 
-
-        Picasso.with(context)
-                .load(End_Points.IMAGE_BASE_URL + home_model.getBrand_logo())
-                .resize(150, 150)
-                .centerCrop().transform(new CircleTransform())
-                .into(profile_pic);
+        if(!home_model.getBrand_logo().equals("") && !home_model.getBrand_logo().equals("null")) {
+            Picasso.with(context)
+                    .load(End_Points.IMAGE_BASE_URL + home_model.getBrand_logo())
+                    .resize(150, 150)
+                    .centerCrop().transform(new CircleTransform())
+                    .into(profile_pic);
+        }else {
+            Picasso.with(context)
+                    .load(R.drawable.no_logo)
+                    .resize(150, 150)
+                    .centerCrop().transform(new CircleTransform())
+                    .into(profile_pic);
+        }
 
                 /*Counter_Model counter_model = counter_list.get(position);
                 Likes.setText(counter_model.getLiked());

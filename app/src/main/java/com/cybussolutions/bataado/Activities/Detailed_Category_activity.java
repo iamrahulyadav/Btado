@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -53,6 +55,7 @@ public class Detailed_Category_activity extends AppCompatActivity {
     ListView search_list;
     ImageView home_fotter;
     ArrayList<Home_Model> filteredLeaves;
+    TextView tvNoData;
 
 
     @Override
@@ -67,17 +70,31 @@ public class Detailed_Category_activity extends AppCompatActivity {
         cat_id = intent.getStringExtra("cat_id");
         cat_name = intent.getStringExtra("cat_name");
 
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar = findViewById(R.id.app_bar);
         toolbar.setTitle(cat_name);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
-        search_list = (ListView) findViewById(R.id.listview_search);
-        searchText = (EditText) findViewById(R.id.search);
+        search_list = findViewById(R.id.listview_search);
+        tvNoData = findViewById(R.id.noData);
+        searchText = findViewById(R.id.search);
 
         searchText.setHint(cat_name);
+        searchText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                searchText.setCursorVisible(true);
+                return false;
+            }
+        });
 
         getAllReview();
 
@@ -85,7 +102,7 @@ public class Detailed_Category_activity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    Intent intent1= new Intent(Detailed_Category_activity.this,Detail_brand.class);
+                    Intent intent1= new Intent(Detailed_Category_activity.this,MapsActivity.class);
                     intent1.putExtra("brandId",brand_list.get(i).getBrandid());
                     intent1.putExtra("brandNAme",brand_list.get(i).getBrand_name());
                     intent1.putExtra("brandRating",brand_list.get(i).getRating());
@@ -98,7 +115,7 @@ public class Detailed_Category_activity extends AppCompatActivity {
         });
 
 
-        home_fotter = (ImageView) findViewById(R.id.home_fotter);
+        home_fotter = findViewById(R.id.home_fotter);
         home_fotter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,6 +153,11 @@ public class Detailed_Category_activity extends AppCompatActivity {
                         }
                     }
                 }
+                if(brand_list.size()<1){
+                    tvNoData.setVisibility(View.VISIBLE);
+                }else {
+                    tvNoData.setVisibility(View.GONE);
+                }
                 /*leaveDatas.clear();
                 leaveDatas.addAll(filteredLeaves);
                 leaves_adapter.notifyDataSetChanged();*/
@@ -167,7 +189,10 @@ public class Detailed_Category_activity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response)
                     {
-
+                        if(response.equals("\"\"")){
+                            tvNoData.setVisibility(View.VISIBLE);
+                            tvNoData.setText("No Data Available in "+cat_name+".");
+                        }
                         parseJson(response);
 
                         search_detail_addapter = new Search_Detail_Addapter(Detailed_Category_activity.this,brand_list);
@@ -238,13 +263,18 @@ public class Detailed_Category_activity extends AppCompatActivity {
     {
 
         try {
+            JSONObject object = new JSONObject(response);
 
-            JSONArray inner = new JSONArray(response);
+            String res = object.getString("brands");
+            String rating = object.getString("rating");
+            JSONArray inner = new JSONArray(res);
+            JSONArray inner1 = new JSONArray(rating);
 
 
-            for (int i= 0 ;i<=inner.length();i++)
+            for (int i= 0 ;i<inner.length();i++)
             {
                 JSONObject innerobj = new JSONObject(inner.getString(i));
+              //  JSONObject innerobj1 = new JSONObject(inner1.getString(i));
 
                 Home_Model home_model = new Home_Model();
 
@@ -257,12 +287,15 @@ public class Detailed_Category_activity extends AppCompatActivity {
                 home_model.setBrand_name(innerobj.getString("brand_name"));
                 home_model.setNum_review(innerobj.getString("reviews"));
                 home_model.setAdress(innerobj.getString("address"));
-                home_model.setRating(innerobj.getString("rating"));
+                home_model.setRating(inner1.getString(i));
+                home_model.setIcon("0");
                 home_model.setPhone(innerobj.getString("phone"));
                 home_model.setWebsite_url(innerobj.getString("website_url"));
                 home_model.setBlock(innerobj.getString("block"));
                 home_model.setArea(innerobj.getString("area_town"));
                 home_model.setBrand_logo(innerobj.getString("brand_logo"));
+               // home_model.setMedia_type(innerobj.getString("media_type"));
+               // home_model.setFile_path(innerobj.getString("file_path"));
 
                 brand_list.add(home_model);
 
@@ -278,4 +311,13 @@ public class Detailed_Category_activity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(searchText.isCursorVisible()){
+            searchText.setCursorVisible(false);
+            searchText.setText("");
+        }else {
+            super.onBackPressed();
+        }
+    }
 }

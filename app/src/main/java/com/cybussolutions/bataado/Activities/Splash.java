@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.view.PagerAdapter;
@@ -12,6 +15,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +40,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
+import com.cybussolutions.bataado.Utils.DialogBox;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -51,6 +57,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +96,17 @@ public class Splash extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash);
 
-
+      /*  try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.e("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        }*/
 
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
         String user_session= pref.getString("remmember_me", null);
@@ -104,10 +122,10 @@ public class Splash extends AppCompatActivity {
         {
 
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        login = (Button) findViewById(R.id.login);
-        newUser = (Button) findViewById(R.id.new_user);
+        viewPager = findViewById(R.id.view_pager);
+        dotsLayout = findViewById(R.id.layoutDots);
+        login = findViewById(R.id.login);
+        newUser = findViewById(R.id.new_user);
 
         // layouts of all welcome sliders
         // add few more layouts if you want
@@ -128,7 +146,7 @@ public class Splash extends AppCompatActivity {
 
         // FaceBook login
 
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile","user_friends", "email"));
         callbackManager = CallbackManager.Factory.create();
 
@@ -264,6 +282,7 @@ public class Splash extends AppCompatActivity {
 
 
                     Intent intent= new Intent(Splash.this,SignUp.class);
+                    finish();
                     startActivity(intent);
                 }
             });
@@ -395,20 +414,13 @@ public class Splash extends AppCompatActivity {
 
                         if(response.equals("false"))
                         {
-                            new SweetAlertDialog(Splash.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Error!")
-                                    .setConfirmText("OK").setContentText("Incorrect User name or Password !! ")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sDialog) {
-                                            sDialog.dismiss();
-
-                                        }
-                                    })
-                                    .show();
+                            ringProgressDialog.dismiss();
+                            new DialogBox(Splash.this, "Incorrect User name or Password !!", "Error",
+                                    "Error");
                         }
                         else if(response.equals("0"))
                         {
+                            ringProgressDialog.dismiss();
                             Toast.makeText(Splash.this, "Your Account has been blocked ! Contact Administration .", Toast.LENGTH_SHORT).show();
                         }
                         else
@@ -430,10 +442,13 @@ public class Splash extends AppCompatActivity {
                                 // Saving string
                                 editor.putString("user_id", userid);
                                 editor.putString("user_name",name);
+                                editor.putString("first_name",object.getString("first_name"));
+                                editor.putString("last_name",object.getString("last_name"));
                                 editor.putString("email",email);
                                 editor.putString("remmember_me","loggedin");
                                 editor.putString("profile_pic",profile_pic);
                                 editor.putString("fb_ids", fb_ids);
+                                editor.putString("fb_user", "1");
 
                                 editor.apply();
 
@@ -454,32 +469,14 @@ public class Splash extends AppCompatActivity {
 
                 if (error instanceof NoConnectionError)
                 {
-                    new SweetAlertDialog(Splash.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-                                    LoginManager.getInstance().logOut();
-                                }
-                            })
-                            .show();
+                    ringProgressDialog.dismiss();
+                    new DialogBox(Splash.this, "No Internet Connection!", "Error",
+                            "Error");
                 }
                 else if (error instanceof TimeoutError) {
 
-
-                    new SweetAlertDialog(Splash.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-                                    LoginManager.getInstance().logOut();
-                                }
-                            })
-                            .show();
+                    new DialogBox(Splash.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         })
@@ -508,7 +505,9 @@ public class Splash extends AppCompatActivity {
 
     public void Signup_User(final String fname, final String lname, final String email,final String image, final String fb_id)
     {
-
+        ringProgressDialog = ProgressDialog.show(this, "Please wait ...",	"Checking Credentials ...", true);
+        ringProgressDialog.setCancelable(false);
+        ringProgressDialog.show();
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.SIGN_UP,
                 new Response.Listener<String>()
                 {
@@ -518,24 +517,13 @@ public class Splash extends AppCompatActivity {
 
                         if(response.equals("") )
                         {
-                            new SweetAlertDialog(Splash.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Error!")
-                                    .setConfirmText("OK").setContentText("Error Registering user")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sDialog) {
+                            ringProgressDialog.dismiss();
+                            new DialogBox(Splash.this, "Error Registering user", "Error",
+                                    "Error");
 
-                                           sDialog.dismiss();
-
-
-                                        }
-                                    })
-                                    .show();
                         }
                         else {
-
                                             login_user(email,"");
-
 
                         }
                     }
@@ -544,6 +532,7 @@ public class Splash extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error)
             {
+                ringProgressDialog.dismiss();
 
                 if (error instanceof NoConnectionError)
                 {
@@ -594,7 +583,7 @@ public class Splash extends AppCompatActivity {
                     public void onResponse(String response) {
 
                         //Toast.makeText(Login.this,response, Toast.LENGTH_SHORT).show();
-
+                        ringProgressDialog.dismiss();
                         try {
                             JSONObject object = new JSONObject(response);
 
@@ -627,36 +616,16 @@ public class Splash extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-
-
+                ringProgressDialog.dismiss();
                 if (error instanceof NoConnectionError)
                 {
-                    new SweetAlertDialog(Splash.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(Splash.this, "No Internet Connection!", "Error",
+                            "Error");
                 }
                 else if (error instanceof TimeoutError) {
 
-
-                    new SweetAlertDialog(Splash.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(Splash.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         })
@@ -667,6 +636,7 @@ public class Splash extends AppCompatActivity {
 
                 Map<String,String> params = new HashMap<>();
                 params.put("user_id",userid);
+                params.put("stalkerID",userid);
 
                 return params;
             }

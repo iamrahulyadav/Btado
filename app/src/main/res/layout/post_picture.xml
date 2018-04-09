@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
+    You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
+    copy, modify, and distribute this software in source code or binary form for use
+    in connection with the web services and APIs provided by Facebook.
+    As with any software that integrates with the Facebook platform, your use of
+    this software is subject to the Facebook Developer Principles and Policies
+    [http://developers.facebook.com/policy/]. This copyright notice shall be
+    included in all copies or substantial portions of the software.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_dialog"
+    >
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFF"
+        android:id="@+id/main_ui_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_margin="20dp"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/brand_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brand Name"
+                android:textSize="20sp"/>
+                <ImageView
+                    android:id="@+id/cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:layout_alignParentEnd="true"
+                    android:background="@android:drawable/ic_delete"/>
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/brand_raiting"
+                    android:scaleX="0.45"
+                    android:scaleY="0.45"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="20dp"
+                    android:layout_marginTop="25dp" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/et_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Start Your Review"
+                android:textColor="#333"
+                android:textSize="18sp"
+                android:maxLines="5"
+                android:layout_marginTop="2dp"/>
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/profilePicture"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/com_facebook_profile_picture_blank_square"/>
+            <TextView
+                android:id="@+id/remove"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Remove"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                android:textColor="@color/colorPrimary"/>
+            <Button
+                android:layout_width="150dp"
+                android:padding="10dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/full_button_style_green"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/uploadVedioPic"
+                android:text="Upload Image/Video"
+                android:textColor="@color/white"/>
+            <Button
+                android:padding="10dp"
+                android:id="@+id/postStatusUpdateButton"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:textColor="@color/white"
+                android:background="@drawable/full_button_style_green"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

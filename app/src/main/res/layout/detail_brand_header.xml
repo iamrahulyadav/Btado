@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:map="http://schemas.android.com/apk/res-auto">
 
 
 <ImageView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:id="@+id/imageView7"
-    android:background="@drawable/review"
-    android:layout_below="@+id/logo_img"
+    android:background="@drawable/item_review"
     android:layout_alignParentStart="true"
-    android:layout_margin="10dp" />
+    android:layout_marginTop="10dp"
+    />
 
 <TextView
     android:layout_width="wrap_content"
@@ -78,37 +77,158 @@ android:layout_height="match_parent"
     android:layout_alignTop="@+id/brand_name"
     android:layout_alignEnd="@+id/imageView7"
     android:layout_marginEnd="16dp" />
-
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/imageView8"
-        android:background="@drawable/top"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/imageView7"
-        android:layout_centerHorizontal="true" />
-
-    <ImageView
+        android:id="@+id/linearImages"
+       android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+       android:gravity="center"
+        android:background="@drawable/item_review"
+       >
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imageView8"
+            android:background="@drawable/camera"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"
+             />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:background="#515354"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="10dp"/>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:id="@+id/imageViewReview"
+            android:background="@drawable/post_icon"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:background="#515354"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"/>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/imageViewShare"
+            android:background="@drawable/icon_share"
+            android:layout_margin="10dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/layoutmap"
+        android:background="@drawable/item_review"
+        android:layout_below="@+id/linearImages"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/imageView9"
-        android:background="@drawable/map"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/imageView8"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <fragment
+        android:layout_margin="5dp"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        map:uiZoomGestures="false"/>
+        <TextView
+            android:gravity="center"
+            android:text="area"
+            android:id="@+id/address"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:gravity="center"
+            android:text="area"
+            android:textColor="@color/black"
+            android:id="@+id/website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:gravity="center"
+            android:text="area"
+            android:textColor="@color/black"
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:gravity="center"
+            android:text="area"
+            android:textColor="@color/black"
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:gravity="center"
+            android:text="No Branches Found"
+            android:textColor="@color/black"
+            android:id="@+id/branches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-    <ImageView
+    <RelativeLayout
+        android:id="@+id/layoutPhotos"
+        android:background="@drawable/item_review"
+        android:layout_below="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+        <ImageView
+            android:id="@+id/picture1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/images_placeholder"
+            />
+        <ImageView
+            android:id="@+id/picture2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/images_placeholder"
+          />
+        <ImageView
+            android:id="@+id/picture3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/images_placeholder"
+            />
+        <TextView
+            android:layout_marginTop="7dp"
+            android:layout_below="@+id/picture1"
+            android:id="@+id/textViewSeeAll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="See All"
+            android:gravity="center"/>
+    </RelativeLayout>
+   <!-- <ImageView
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:id="@+id/imageView10"
-        android:background="@drawable/photos"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:background="@drawable/item_review"
         android:layout_below="@+id/textView8"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true" />-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -118,8 +238,8 @@ android:layout_height="match_parent"
         android:id="@+id/textView8"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:layout_below="@+id/imageView9"
-        android:layout_alignStart="@+id/imageView10"
+        android:layout_below="@+id/layoutmap"
+        android:layout_alignStart="@+id/layoutPhotos"
         android:layout_margin="10dp" />
 
     <TextView
@@ -132,9 +252,9 @@ android:layout_height="match_parent"
         android:textStyle="bold"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_below="@+id/imageView10"
+        android:layout_below="@+id/layoutPhotos"
         android:layout_alignStart="@+id/textView8"
-        android:layout_margin="10dp" />
+        android:layout_marginTop="10dp" />
 
 
 </RelativeLayout>

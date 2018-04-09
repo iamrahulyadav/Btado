@@ -46,7 +46,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     //This method is only generating push notification
     private void sendNotification(String title, String messageBody, String type) {
         Intent intent = null;
+       /* String[] message=title.split("^");
+        String userId=message[1];
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+        String id  = pref.getString("user_id","");
+        if(title.startsWith("Your Friend Request Has Been Accepted") && !id.equals(userId)){
 
+        }*/
         if (title.startsWith("Friend Request"))
         {
             intent = new Intent(this, Friend_Request.class);

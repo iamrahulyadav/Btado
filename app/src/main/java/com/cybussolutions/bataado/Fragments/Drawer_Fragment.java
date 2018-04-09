@@ -47,7 +47,7 @@ public class Drawer_Fragment extends Fragment {
     String  strphoto,strfriend,strreviews ;
 
 
-    String[] nameArray = new String[] {"Notifications","Find Friends ","Message","Log Out"};
+    String[] nameArray = new String[] {"Friend Request","Find Friends ","Message","Log Out"};
     int[] images =  new int[] {R.drawable.notification,R.drawable.find_friend,R.drawable.message,R.drawable.logout};
     ListView drawer_list;
 
@@ -62,23 +62,23 @@ public class Drawer_Fragment extends Fragment {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_drawer, container, false);
 
-        drawer_list = (ListView) v.findViewById(R.id.drawer_list);
-        username = (TextView) v.findViewById(R.id.drawer_user_name);
-        profile_image = (ImageView) v.findViewById(R.id.profile_image);
-        photo = (TextView) v.findViewById(R.id.photos_count);
-        friend = (TextView) v.findViewById(R.id.friends_count);
-        reviews = (TextView) v.findViewById(R.id.review_count);
+        drawer_list = v.findViewById(R.id.drawer_list);
+        username = v.findViewById(R.id.drawer_user_name);
+        profile_image = v.findViewById(R.id.profile_image);
+        photo = v.findViewById(R.id.photos_count);
+        friend = v.findViewById(R.id.friends_count);
+        reviews = v.findViewById(R.id.review_count);
 
         String  strname="";
         final String pp;
         final String strid;
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("BtadoPrefs", getActivity().MODE_PRIVATE);
-        strname = pref.getString("user_name","");;
+        strname = pref.getString("user_name","");
         strid = pref.getString("user_id","");
-        pp = pref.getString("profile_pic","");;
-        strphoto = pref.getString("total_photos","");;
-        strfriend = pref.getString("total_friends","");;
-        strreviews = pref.getString("total_reviews","");;
+        pp = pref.getString("profile_pic","");
+        strphoto = pref.getString("total_photos","");
+        strfriend = pref.getString("total_friends","");
+        strreviews = pref.getString("total_reviews","");
 
 
         photo.setText(strphoto);
@@ -108,30 +108,27 @@ public class Drawer_Fragment extends Fragment {
         if(pp.equals(""))
         {
             Picasso.with(getContext())
-                    .load("http://bataado.cybussolutions.com/uploads/no-image-icon-hi.png")
+                    .load(End_Points.IMAGE_RREVIEW_URL+"no-image-icon-hi.png")
                     .resize(150, 150)
                     .centerCrop().transform(new CircleTransform())
                     .into(profile_image);
         }
+        else {
+            if (pp.startsWith("https://graph.facebook.com/")) {
+                Picasso.with(getContext())
+                        .load(pp)
+                        .resize(150, 150)
+                        .centerCrop().transform(new CircleTransform())
+                        .into(profile_image);
+            } else {
+                Picasso.with(getContext())
+                        .load(End_Points.IMAGE_PROFILE_PIC + pp)
+                        .resize(150, 150)
+                        .centerCrop().transform(new CircleTransform())
+                        .into(profile_image);
 
-        if(pp.startsWith("https://graph.facebook.com/"))
-        {
-            Picasso.with(getContext())
-                    .load(pp)
-                    .resize(150, 150)
-                    .centerCrop().transform(new CircleTransform())
-                    .into(profile_image);
+            }
         }
-        else
-        {
-            Picasso.with(getContext())
-                    .load(End_Points.IMAGE_PROFILE_PIC +pp )
-                    .resize(150, 150)
-                    .centerCrop().transform(new CircleTransform())
-                    .into(profile_image);
-
-        }
-
 
         username.setText(strname);
 
@@ -168,7 +165,7 @@ public class Drawer_Fragment extends Fragment {
                 {
                     editor.putString("friend_request","deactive");
                     editor.apply();
-
+                    drawer_addapter.notifyDataSetChanged();
                     Intent intent = new Intent(getActivity(), Friend_Request.class);
                     startActivity(intent);
 

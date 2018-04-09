@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:minHeight="100dp"
+    android:background="@color/White"
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/titleofDialog"
+                android:text="Text Here...."
+                android:textSize="26sp"
+                android:layout_width="match_parent"
+                android:textColor="#0E0A4F"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/line_green"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@id/titleofDialog"
+                />
+
+            <TextView
+                android:id="@+id/lotsoftext"
+                android:layout_margin="10dp"
+                android:text="Text Here...."
+                android:layout_width="match_parent"
+                android:layout_below="@+id/titleofDialog"
+                android:gravity="start"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+
+                />
+            <TextView
+                android:id="@+id/additionalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:gravity="center_horizontal|center"
+                android:layout_alignParentEnd="true"
+                android:layout_alignLeft="@+id/titleofDialog"
+                android:layout_alignRight="@+id/titleofDialog"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:layout_below="@+id/lotsoftext"
+                android:text="Text Here"
+                android:layout_marginBottom="10dp"
+                android:textColor="#FE1919"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Ok"
+                android:background="#459300"
+                android:layout_below="@+id/additionalButton"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:id="@+id/okbtn"
+                android:textColor="#fff"
+                android:layout_marginBottom="35dp"
+                />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,8 +1,10 @@
 package com.cybussolutions.bataado.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +24,12 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.bataado.Activities.SignUp;
 import com.cybussolutions.bataado.Helper.CircleTransform;
 import com.cybussolutions.bataado.Model.Home_Model;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
+import com.cybussolutions.bataado.Utils.DialogBox;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,15 +38,17 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class Responce_Friends_addapter extends ArrayAdapter<String>
 {
     private static final int MY_SOCKET_TIMEOUT_MS = 10000 ;
     ProgressDialog ringProgressDialog;
-    String userid;
+    private String userid;
     private ArrayList<Home_Model> arraylist;
-    Activity context;
-    ImageView accpet,reject;
-
+    private Activity context;
+    private ImageView reject;
+    private Button accpet;
 
 
     public Responce_Friends_addapter(Activity context, ArrayList<Home_Model> list)
@@ -67,18 +73,20 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
 
 
 
+    @SuppressLint("InflateParams")
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, @NonNull final ViewGroup parent)
     {
         View rowView;
 
         LayoutInflater inflater = context.getLayoutInflater();
         rowView = inflater.inflate(R.layout.responce_friend_row,null,true);
 
-        final TextView username = (TextView) rowView.findViewById(R.id.fr_name);
-        ImageView profile_pic = (ImageView) rowView.findViewById(R.id.fr_pp);
-        accpet = (ImageView) rowView.findViewById(R.id.accept);
-        reject = (ImageView) rowView.findViewById(R.id.reject);
+        final TextView username = rowView.findViewById(R.id.fr_name);
+        ImageView profile_pic = rowView.findViewById(R.id.fr_pp);
+        accpet = rowView.findViewById(R.id.accept);
+        reject = rowView.findViewById(R.id.reject);
 
         final Home_Model  home_model = arraylist.get(position);
         username.setText(home_model.getFirstname() +" "+ home_model.getLastname());
@@ -93,15 +101,18 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
         accpet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendResponce(home_model.getUserid(),userid,"1");
+
+                sendResponce(home_model.getUserid(),userid,"1",position,home_model.getPost_id());
+
 
             }
         });
 
+        reject.setVisibility(View.GONE);
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendResponce(home_model.getUserid(),userid,"2");
+                //sendResponce(home_model.getUserid(),userid,"2",position);
             }
         });
 
@@ -109,7 +120,7 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
 
         String pp =home_model.getProfilepic();
 
-        if(pp.startsWith("https://graph.facebook.com/"))
+        if (pp.startsWith("https://graph.facebook.com/") || pp.startsWith("https://fb-s-b-a.akamaihd.net/")|| pp.startsWith("https://scontent.xx.fbcdn.net/") || pp.startsWith("http://graph.facebook.com/"))
         {
             Picasso.with(getContext())
                     .load(pp)
@@ -143,7 +154,7 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
     }
 
 
-    public void sendResponce(final String sender, final String reciever , final  String status)
+    private void sendResponce(final String sender, final String reciever, final String status, final int position, final String req_id)
     {
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.SEND_RESPONCE_REQUEST,
@@ -151,19 +162,26 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
                     @Override
                     public void onResponse(String response) {
 
-                        if (response.startsWith("1%updated") ||response.startsWith("0%updated")  ) {
+                        if (response.startsWith("1%updated") ||response.startsWith("0%updated") || response.startsWith("Accepted") ) {
+                            arraylist.remove(position);
+                            notifyDataSetChanged();
 
-                            new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                           /* new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Success")
                                     .setConfirmText("OK").setContentText("Your respoce has been updated")
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
-                                            sDialog.dismiss();
-
-                                        }
+                                            sDialog.dismiss();*/
+                                            SharedPreferences preferences = context.getSharedPreferences("Notifications",MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.putString("friend_request","inactive");
+                                            editor.apply();
+                            new DialogBox(context, "Friend Request Accepted", "error",
+                                    "Success");
+                                        /*}
                                     })
-                                    .show();
+                                    .show();*/
 
                         }
                         else {
@@ -181,7 +199,7 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
 
                 if (error instanceof NoConnectionError)
                 {
-                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                   /* new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error!")
                             .setConfirmText("OK").setContentText("No Internet Connection")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -191,12 +209,12 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
 
                                 }
                             })
-                            .show();
+                            .show();*/
                 }
                 else if (error instanceof TimeoutError) {
 
 
-                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                  /*  new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error!")
                             .setConfirmText("OK").setContentText("Connection Time Out Error")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -206,7 +224,7 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
 
                                 }
                             })
-                            .show();
+                            .show();*/
                 }
             }
         })
@@ -216,9 +234,13 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
             {
 
                 Map<String,String> params = new HashMap<>();
-                params.put("reciever",sender);
+                params.put("req_id",req_id);
+                params.put("to_id",reciever);
+                params.put("from_id",sender);
+
+                /*params.put("reciever",sender);
                 params.put("sender",reciever);
-                params.put("status",status);
+                params.put("status",status);*/
 
                 return params;
             }

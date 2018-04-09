@@ -31,12 +31,14 @@
         android:layout_marginTop="10dp">
 
 
-        <ImageView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:background="@drawable/thumbsupgreen"
+           android:text="accept"
+            android:textColor="@color/white"
             android:layout_weight="1"
             android:layout_margin="10dp"
+            android:background="@color/colorPrimary"
             android:id="@+id/accept" />
 
         <ImageView
@@ -44,6 +46,7 @@
             android:layout_height="40dp"
             android:background="@drawable/thumbdownred"
             android:layout_weight="1"
+            android:visibility="gone"
             android:layout_margin="10dp"
             android:id="@+id/reject" />
 

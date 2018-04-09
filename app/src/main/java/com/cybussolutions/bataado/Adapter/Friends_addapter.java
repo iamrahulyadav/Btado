@@ -1,6 +1,7 @@
 package com.cybussolutions.bataado.Adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.cybussolutions.bataado.Activities.User_Profile;
 import com.cybussolutions.bataado.Helper.CircleTransform;
 import com.cybussolutions.bataado.Model.Home_Model;
 import com.cybussolutions.bataado.Network.End_Points;
@@ -56,14 +58,22 @@ public class Friends_addapter extends ArrayAdapter<String>
         LayoutInflater inflater = context.getLayoutInflater();
         rowView = inflater.inflate(R.layout.friends_list,null,true);
 
-        TextView username = (TextView) rowView.findViewById(R.id.fr_name);
-        TextView adress = (TextView) rowView.findViewById(R.id.adress);
-        ImageView profile_pic = (ImageView) rowView.findViewById(R.id.fr_pp);
+        final TextView username = rowView.findViewById(R.id.fr_name);
+        TextView adress = rowView.findViewById(R.id.adress);
+        ImageView profile_pic = rowView.findViewById(R.id.fr_pp);
 
-        Home_Model  home_model = arraylist.get(position);
+        final Home_Model  home_model = arraylist.get(position);
         username.setText(home_model.getFirstname() +" "+ home_model.getLastname());
 
-
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), User_Profile.class);
+                intent.putExtra("username", username.getText().toString());
+                intent.putExtra("userID", home_model.getUserid());
+                getContext().startActivity(intent);
+            }
+        });
         String adressing =home_model.getBlock();
 
         if(adress ==  null )
@@ -77,7 +87,7 @@ public class Friends_addapter extends ArrayAdapter<String>
         }
         String pp =home_model.getProfilepic();
 
-        if(pp.startsWith("https://graph.facebook.com/"))
+        if(pp.startsWith("https://graph.facebook.com/")|| pp.startsWith("https://scontent.xx.fbcdn.net/") || pp.startsWith("https://graph.facebook.com/"))
         {
             Picasso.with(getContext())
                     .load(pp)

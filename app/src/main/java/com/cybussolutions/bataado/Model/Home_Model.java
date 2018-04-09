@@ -3,9 +3,124 @@ package com.cybussolutions.bataado.Model;
 
 public class Home_Model {
 
-    String userid,review,post_id,brandid,rating,date_created,status,email_brand,
-            firstname,lastname,profilepic,brand_name,num_review,phone,website_url,
-            block,area,brand_logo,reviewid,adress,brand_raiting;
+    String userid;
+    String review;
+    String post_id;
+    String brandid;
+    String rating;
+    String date_created;
+    String status;
+    String email_brand;
+    String firstname;
+    String lastname;
+    String profilepic;
+    String brand_name;
+    String num_review;
+    String phone;
+    String website_url;
+    String block;
+    String area;
+    String brand_logo;
+    String reviewid;
+    String adress;
+    String brand_raiting;
+    String totalComments;
+
+    public String getInappropriate() {
+        return inappropriate;
+    }
+
+    public void setInappropriate(String inappropriate) {
+        this.inappropriate = inappropriate;
+    }
+
+    String inappropriate;
+
+    public String getShared() {
+        return shared;
+    }
+
+    public void setShared(String shared) {
+        this.shared = shared;
+    }
+
+    String shared;
+
+    public int getTotalLikes() {
+        return totalLikes;
+    }
+
+    public void setTotalLikes(int totalLikes) {
+        this.totalLikes = totalLikes;
+    }
+
+    int totalLikes;
+
+    public String getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(String totalComments) {
+        this.totalComments = totalComments;
+    }
+
+    public String getTotalShares() {
+        return totalShares;
+    }
+
+    public void setTotalShares(String totalShares) {
+        this.totalShares = totalShares;
+    }
+
+    String totalShares;
+
+    public String getBrand_latitude() {
+        return brand_latitude;
+    }
+
+    public void setBrand_latitude(String brand_latitude) {
+        this.brand_latitude = brand_latitude;
+    }
+
+    public String getBrand_longitude() {
+        return brand_longitude;
+    }
+
+    public void setBrand_longitude(String brand_longitude) {
+        this.brand_longitude = brand_longitude;
+    }
+
+    String brand_latitude;
+    String brand_longitude;
+
+    public String getMedia_type() {
+        return media_type;
+    }
+
+    public void setMedia_type(String media_type) {
+        this.media_type = media_type;
+    }
+
+    public String getFile_path() {
+        return file_path;
+    }
+
+    public void setFile_path(String file_path) {
+        this.file_path = file_path;
+    }
+
+    String media_type;
+    String file_path;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    String icon;
 
     public String getBrand_raiting() {
         return brand_raiting;

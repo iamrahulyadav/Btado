@@ -1,10 +1,21 @@
 <resources>
     <string name="app_name">BataaDo</string>
     <string name="next">NEXT</string>
-    <string name="app_id">1828028847445228</string>
+    <string name="app_id">1765807627049319</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="draweropem">open</string>
     <string name="drawerclose">close</string>
+    <string name="quotedesc">Welcome! Where should we deliver to?</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="just_now">Right now</string>
+    <string name="a_min_ago">1 minute ago</string>
+    <string name="mins_ago">" minutes ago"</string>
+    <string name="a_hour_ago">1 hour ago</string>
+    <string name="hours_ago"> hours ago</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="days_ago">" days ago"</string>
+    <string name="week_ago">" week ago"</string>
+    <string name="weeks_ago">" weeks ago"</string>
 </resources>

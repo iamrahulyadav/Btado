@@ -1,0 +1,25 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+
+    </include>
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/app_bar"
+        android:id="@+id/rv_images"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/noImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Images/Videos Available"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

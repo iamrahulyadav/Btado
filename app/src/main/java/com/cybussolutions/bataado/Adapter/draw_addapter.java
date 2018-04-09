@@ -1,7 +1,9 @@
 package com.cybussolutions.bataado.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,14 @@ import android.widget.TextView;
 
 import com.cybussolutions.bataado.R;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class draw_addapter extends ArrayAdapter<String>
 
 {
-    String title[],isActive;
-    int imgs[];
-    Activity context;
+    private String title[],isActive;
+    private int imgs[];
+    private Activity context;
 
 
 
@@ -30,8 +34,10 @@ public class draw_addapter extends ArrayAdapter<String>
 
 
 
+    @SuppressLint("InflateParams")
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent)
     {
 
         View rowView;
@@ -39,13 +45,13 @@ public class draw_addapter extends ArrayAdapter<String>
 
         LayoutInflater inflater = context.getLayoutInflater();
         rowView = inflater.inflate(R.layout.drawer_row,null,true);
-        TextView name=(TextView) rowView.findViewById(R.id.text_drawer);
-        ImageView img = (ImageView) rowView.findViewById(R.id.img_drawer);
-        final ImageView notifiaction_img = (ImageView) rowView.findViewById(R.id.img_notification);
+        TextView name= rowView.findViewById(R.id.text_drawer);
+        ImageView img = rowView.findViewById(R.id.img_drawer);
+        final ImageView notifiaction_img = rowView.findViewById(R.id.img_notification);
 
         notifiaction_img.setVisibility(View.GONE);
 
-        final SharedPreferences notification_pref = getContext().getApplicationContext().getSharedPreferences("Notifications", getContext().MODE_PRIVATE);
+        final SharedPreferences notification_pref = getContext().getApplicationContext().getSharedPreferences("Notifications",MODE_PRIVATE);
         final SharedPreferences.Editor editor= notification_pref.edit();
 
         isActive = notification_pref.getString("friend_request","");
@@ -54,6 +60,8 @@ public class draw_addapter extends ArrayAdapter<String>
         {
             notifiaction_img.setVisibility(View.VISIBLE);
             notifiaction_img.setImageResource(R.drawable.tnotification_active);
+        }else {
+            notifiaction_img.setVisibility(View.INVISIBLE);
         }
 
 

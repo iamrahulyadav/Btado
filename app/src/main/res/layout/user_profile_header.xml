@@ -66,14 +66,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/freinds_layout">
+            android:id="@+id/freinds_layout"
+            >
 
 
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:background="@drawable/ora_friends"
                 android:id="@+id/imageView12" />
 
@@ -83,7 +84,6 @@
                 android:text="12"
                 android:layout_marginLeft="10dp"
                 android:textSize="18sp"
-                android:layout_alignTop="@+id/imageView12"
                 android:layout_toEndOf="@+id/imageView12"
                 android:layout_marginTop="5dp"
                 android:id="@+id/fr_count" />
@@ -95,7 +95,7 @@
                 android:text="FRIENDS"
                 android:id="@+id/textView14"
                 android:layout_below="@+id/imageView12"
-                android:layout_centerHorizontal="true"
+              android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold" />
 
@@ -106,14 +106,15 @@
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:id="@+id/reviews_layout">
 
 
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:background="@drawable/org_str"
                 android:id="@+id/imageView13" />
 
@@ -123,7 +124,6 @@
                 android:text="12"
                 android:layout_marginLeft="10dp"
                 android:textSize="18sp"
-                android:layout_alignTop="@+id/imageView13"
                 android:layout_toEndOf="@+id/imageView13"
                 android:layout_marginTop="5dp"
                 android:id="@+id/rw_count" />
@@ -146,14 +146,15 @@
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:id="@+id/photos_layout">
 
 
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:background="@drawable/orange_camera"
                 android:id="@+id/imageView14" />
 
@@ -163,7 +164,6 @@
                 android:text="12"
                 android:layout_marginLeft="10dp"
                 android:textSize="18sp"
-                android:layout_alignTop="@+id/imageView14"
                 android:layout_toEndOf="@+id/imageView14"
                 android:layout_marginTop="5dp"
                 android:id="@+id/ph_count" />
@@ -197,7 +197,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="135dp"
+        android:layout_height="80dp"
         android:id="@+id/linear_layout"
         android:orientation="vertical"
         android:background="@color/White"
@@ -242,23 +242,29 @@
 
             />
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/linearReviews"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
             <ImageView
+                android:id="@+id/image1"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/rating"
-                android:layout_margin="10dp"/>
+               android:layout_centerVertical="true"/>
 
             <TextView
+                android:layout_toEndOf="@+id/image1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reviews : "
-                android:layout_margin="13dp"
+                android:id="@+id/reviewTextTag"
+                android:layout_marginStart="10dp"
+               android:layout_centerVertical="true"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 
@@ -266,19 +272,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
+                android:layout_toEndOf="@id/reviewTextTag"
                 android:id="@+id/num_reviews_user"
-                android:layout_margin="13dp"
+               android:layout_margin="10dp"
+                android:layout_centerVertical="true"
                 android:textStyle="bold"/>
 
             <ImageView
+                android:layout_alignParentEnd="true"
                 android:layout_width="10dp"
                 android:layout_height="20dp"
                 android:background="@drawable/next"
+                android:gravity="end"
+                android:layout_marginEnd="15dp"
+              android:layout_centerVertical="true" />
 
-                android:layout_marginTop="13dp"
-                android:layout_marginLeft="190dp" />
-
-        </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -289,6 +298,7 @@
             />
 
         <LinearLayout
+            android:visibility="gone"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -2,98 +2,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/Gainsboro">
-
-
-
-
+    android:background="@null">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_marginTop="15dp"
+      android:layout_alignEnd="@+id/imageView3"
         android:id="@+id/imageView2"
-        android:layout_below="@+id/app_bar"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/balg_review"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/imageView3"
+        android:background="@drawable/item_review" />
 
     <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/brand_image"
         android:layout_alignTop="@+id/imageView2"
-        android:layout_alignStart="@+id/imageView2"
-        android:layout_marginStart="40dp"
+       android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp" />
 
     <TextView
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/brand_name"
         android:text="abcxyz"
-        android:textColor="@color/blue"
-        android:layout_alignTop="@+id/brand_image"
-        android:layout_toEndOf="@+id/brand_image"
-        android:layout_marginStart="28dp" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/cardview_dark_background"
+        android:layout_below="@id/brand_image"
+        />
 
     <RatingBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/brand_raiting"
-        android:scaleX="0.45"
-        android:scaleY="0.45"
-        android:layout_marginStart="25dp"
-        android:layout_alignTop="@+id/brand_image"
-        android:layout_alignStart="@+id/brand_image"
-        android:layout_marginTop="5dp" />
+        android:scaleX="0.33"
+        android:scaleY="0.33"
+        android:layout_below="@id/brand_name"
+        android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/brand_review"
-        android:hint="Start Your Review"
-        android:paddingLeft="10dp"
-        android:background="@drawable/review_bkg"
-        android:layout_below="@+id/brand_raiting"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_alignStart="@+id/previous"
-        android:layout_toStartOf="@+id/post" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="25dp"
         android:id="@+id/post"
-        android:padding="5dp"
-        android:text="  POST  "
+        android:padding="2dp"
+        android:text="  POST REVIEW  "
         android:textStyle="bold"
         android:textColor="@color/White"
         android:background="@drawable/full_button_style_green"
-        android:layout_marginLeft="10dp"
-        android:layout_alignTop="@+id/brand_review"
-        android:layout_alignEnd="@+id/imageView2"
-        android:layout_marginRight="10dp" />
+       android:layout_below="@id/brand_raiting"
+        android:layout_centerHorizontal="true"/>
 
     <ImageView
         android:layout_width="15dp"
         android:layout_height="25dp"
         android:id="@+id/previous"
-        android:background="@drawable/previous"
-        android:layout_below="@+id/brand_name"
+        android:layout_below="@id/brand_image"
+        android:background="@drawable/arrow_point_to_left"
+       android:layout_centerVertical="true"
         android:layout_marginLeft="20dp" />
 
     <ImageView
         android:layout_width="15dp"
         android:layout_height="25dp"
         android:id="@+id/next"
-        android:background="@drawable/next"
-        android:layout_below="@+id/brand_name"
+        android:background="@drawable/arrow_point_to_right"
+       android:layout_below="@id/brand_image"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"/>
 
@@ -113,11 +91,10 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:id="@+id/imageView3"
-        android:background="@drawable/review"
+        android:background="@drawable/item_review_top"
         android:layout_below="@+id/textView2"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -131,13 +108,13 @@
         android:layout_alignStart="@+id/textView2"
         android:layout_margin="2dp" />
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/imageView5"
         android:layout_below="@+id/textView2"
-        android:layout_alignStart="@+id/previous"
-        android:layout_margin="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/demo_img" />
 
     <TextView
@@ -146,9 +123,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Congratulations Sidra !"
         android:id="@+id/textView5"
-        android:textColor="@color/blue"
+        android:maxLines="2"
+        android:textColor="@color/colorPrimary"
         android:layout_alignTop="@+id/imageView5"
-        android:layout_toEndOf="@+id/textView4" />
+        android:layout_marginStart="17dp"
+       android:layout_toEndOf="@id/imageView5" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -171,9 +150,9 @@
         android:textColor="@color/black"
         android:layout_marginLeft="2dp"
         android:layout_alignStart="@+id/textView2"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
         android:layout_below="@+id/review_of_day"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="2dp" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
@@ -181,8 +160,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/review_of_day"
         android:layout_below="@+id/textView4"
-        android:background="@drawable/review"
-        android:layout_margin="5dp">
+        android:background="@drawable/item_review"
+       >
 
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -201,7 +180,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hamza Bin Tariq"
-            android:textColor="@color/blue"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             android:id="@+id/user_name_home"
             android:textStyle="bold"
@@ -234,8 +213,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lahore Country Club "
-            android:textColor="@color/blue"
+            android:textColor="@color/colorPrimary"
             android:textSize="13sp"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textStyle="bold"
             android:id="@+id/Page_home"
             android:layout_alignTop="@+id/textView3"
@@ -262,7 +243,8 @@
             android:maxLines="2"
             android:layout_below="@+id/ratingBar_home"
             android:layout_toEndOf="@+id/profile_image"
-            android:layout_marginStart="17dp" />
+            android:layout_marginStart="17dp"
+            android:layout_marginBottom="5dp"/>
 
 
     </RelativeLayout>
@@ -273,6 +255,8 @@
         android:id="@+id/imageView6"
         android:background="@drawable/crown"
         android:layout_above="@+id/textView6"
-        android:layout_toEndOf="@+id/previous" />
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="15dp"
+        />
 
 </RelativeLayout>

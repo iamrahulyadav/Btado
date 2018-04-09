@@ -58,8 +58,4 @@
         android:layout_toEndOf="@+id/profile_image" />
 
 
-
-
-    -->
-
 </RelativeLayout>

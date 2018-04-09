@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_margin="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#e7e5e5">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Image Name"
+        android:textSize="15sp"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:visibility="gone"
+        android:background="#b4b2b2"
+        android:textColor="#000" />
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="invisible"
+        android:indeterminateTint="@android:color/white"
+        android:layout_centerInParent="true"/>
+
+    <ImageView
+        android:layout_below="@+id/label"
+        android:id="@+id/imageLoaded"
+        android:layout_width="315dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="3dp"
+        android:layout_gravity="center"
+        />
+    <LinearLayout
+        android:layout_below="@+id/imageLoaded"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:gravity="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#b4b2b2">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="Make Profile"
+            android:background="@null"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:textAllCaps="false"
+            android:id="@+id/makeCoverBtn"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="Delete"
+            android:background="@null"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
+            android:textAllCaps="false"
+            android:id="@+id/downloadImageBtn"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Close"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:textColor="@color/red"
+            android:textSize="13sp"
+            android:textAllCaps="false"
+            android:id="@+id/cancelBtn"/>
+
+
+    </LinearLayout>
+</RelativeLayout>

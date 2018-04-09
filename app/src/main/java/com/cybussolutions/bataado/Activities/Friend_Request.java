@@ -1,14 +1,18 @@
 package com.cybussolutions.bataado.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -48,27 +52,104 @@ public class Friend_Request extends AppCompatActivity {
     ListView friends_list;
     Responce_Friends_addapter  responce_friends_addapter = null;
     ArrayList<Home_Model> friendsmodel = new ArrayList<>();
-
+    String notification_id,flag;
+    ImageView search_footer,home_footer,profile_footer;
+    TextView tvNoRequest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend__request);
-
-
+        final SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+        Intent intent=getIntent();
+        if(intent.hasExtra("noti_id") && intent.hasExtra("flag")) {
+            notification_id = intent.getStringExtra("noti_id");
+            flag = intent.getStringExtra("flag");
+        }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        friends_list = (ListView) findViewById(R.id.friends_list );
+        friends_list = findViewById(R.id.friends_list );
+        tvNoRequest = findViewById(R.id.noRequestText );
 
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar = findViewById(R.id.app_bar);
         toolbar.setTitle("Friend Requests");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
-
+        search_footer = findViewById(R.id.search_fotter);
+        home_footer = findViewById(R.id.home_fotter);
+        profile_footer = findViewById(R.id.profile_fotter);
         drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
 
         getAllFriendRequests();
+        if(intent.hasExtra("noti_id") && intent.hasExtra("flag")) {
+            if (!flag.equals("1")) {
+                changeFlag();
+            }
+        }
+        search_footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Friend_Request.this, SearchScreen.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        home_footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Friend_Request.this, HomeScreen.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        profile_footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String pp = pref.getString("profile_pic","");
+                String strname = pref.getString("user_name","");
+                String strid = pref.getString("user_id","");
+                Intent intent= new Intent(Friend_Request.this, Account_Settings.class);
+                intent.putExtra("username", strname);
+                intent.putExtra("userProfile",pp);
+                intent.putExtra("userID",strid);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void changeFlag() {
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.BASE_URL+"updateFriendNotificationFlag",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("id", notification_id);
+
+                return params;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(request);
     }
 
     public void getAllFriendRequests()
@@ -162,27 +243,30 @@ public class Friend_Request extends AppCompatActivity {
 
         try {
 
+            if(!response.equals("false")) {
 
 
-            JSONArray inner = new JSONArray(response);
+                JSONArray inner = new JSONArray(response);
 
 
-            for (int i= 0 ;i<=inner.length();i++)
-            {
-                JSONObject innerobj = new JSONObject(inner.getString(i));
+                for (int i = 0; i < inner.length(); i++) {
+                    JSONObject innerobj = new JSONObject(inner.getString(i));
 
-                Home_Model home_model = new Home_Model();
+                    Home_Model home_model = new Home_Model();
+                    home_model.setPost_id(innerobj.getString("noti_id"));
+                    home_model.setUserid(innerobj.getString("id"));
+                    home_model.setEmail_brand(innerobj.getString("email"));
+                    home_model.setFirstname(innerobj.getString("first_name"));
+                    home_model.setLastname(innerobj.getString("last_name"));
+                    home_model.setProfilepic(innerobj.getString("profile_pic"));
+                    home_model.setBlock(innerobj.getString("address"));
 
-                home_model.setUserid(innerobj.getString("id"));
-                home_model.setEmail_brand(innerobj.getString("email"));
-                home_model.setFirstname(innerobj.getString("first_name"));
-                home_model.setLastname(innerobj.getString("last_name"));
-                home_model.setProfilepic(innerobj.getString("profile_pic"));
-                home_model.setBlock(innerobj.getString("address"));
+                    friendsmodel.add(home_model);
 
-                friendsmodel.add(home_model);
-
-                // Toast.makeText(HomeScreen.this,home_model.getReviewid(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(HomeScreen.this,home_model.getReviewid(), Toast.LENGTH_SHORT).show();
+                }
+            }else {
+                tvNoRequest.setVisibility(View.VISIBLE);
             }
 
 

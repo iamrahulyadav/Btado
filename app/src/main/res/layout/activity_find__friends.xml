@@ -17,6 +17,81 @@
 
         </include>
 
+        <RelativeLayout
+            android:layout_margin="5dp"
+            android:layout_below="@id/app_bar"
+            android:id="@+id/inviteFbFriends"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            >
+            <ImageView
+                android:id="@+id/ivFbIcon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/facebook_icon"/>
+            <TextView
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@id/ivFbIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Find On Facebook"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:layout_alignParentEnd="true"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:background="@drawable/next"
+                android:gravity="end"
+                android:layout_marginEnd="15dp"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_margin="5dp"
+            android:layout_below="@id/inviteFbFriends"
+            android:id="@+id/sendMail"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            >
+            <ImageView
+                android:id="@+id/ivEmailIcon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/email_invite"/>
+            <TextView
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@id/ivEmailIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send Email Invite"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:layout_alignParentEnd="true"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:background="@drawable/next"
+                android:gravity="end"
+                android:layout_marginEnd="15dp"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <!--<Button
+            android:layout_margin="5dp"
+            android:layout_below="@id/sendMail"
+            android:id="@+id/inviteFbFriends"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:background="@drawable/full_button_style_green"
+            android:layout_centerHorizontal="true"
+            android:drawableLeft="@android:drawable/ic_dialog_email"
+            android:text="  Invite Facebook Friends"
+            android:textAllCaps="false"/>-->
 
         <ListView
             android:layout_width="match_parent"
@@ -24,7 +99,7 @@
             android:id="@+id/friends_list"
             android:divider="@android:color/transparent"
             android:dividerHeight="3.0sp"
-            android:layout_below="@+id/app_bar"
+            android:layout_below="@+id/sendMail"
             android:layout_above="@+id/fotter"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
@@ -96,7 +171,7 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="5dp" />
 
-        <EditText
+        <!--<EditText
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:id="@+id/search"
@@ -109,7 +184,7 @@
             android:layout_toStartOf="@+id/logo_img"
             android:background="@drawable/search"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp" />-->
 
 
     </RelativeLayout>
