@@ -632,6 +632,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 picture3.setVisibility(View.GONE);
                                 textViewSeeAll.setText("No Gallery Available");
                             }
+
                             else
                             {
                                 textViewSeeAll.setText("See All");

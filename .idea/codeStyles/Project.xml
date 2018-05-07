@@ -12,6 +12,7 @@
         <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="FunctionPredecl" />
         <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Function" />
       </file>
+
       <class>
         <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Property" />
         <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Synthesize" />
