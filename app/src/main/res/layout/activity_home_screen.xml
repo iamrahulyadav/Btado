@@ -145,7 +145,7 @@
             android:layout_marginRight="10dp" />
 
             <ListView
-                android:background="@color/White"
+                android:background="@color/lightGray"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="35dp"
                 android:layout_below="@+id/search"

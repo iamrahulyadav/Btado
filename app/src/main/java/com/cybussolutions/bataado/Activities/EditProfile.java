@@ -94,7 +94,7 @@ public class EditProfile extends AppCompatActivity {
     public void Update_User()
     {
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...",	"Signing up user ...", true);
+        ringProgressDialog = ProgressDialog.show(this, "Please wait ...",	"Updating ...", true);
         ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
@@ -131,10 +131,13 @@ public class EditProfile extends AppCompatActivity {
                                             SharedPreferences.Editor editor = pref.edit();
                                             // Saving string
                                             editor.putString("user_name",str_fname+" "+str_lname);
+                                            editor.putString("first_name", str_fname);
+                                            editor.putString("last_name", str_lname);
                                             editor.putString("phone",strphone);
                                             editor.putString("address",strAddress);
 
                                             editor.apply();
+                                            editor.commit();
                                             finish();
 
                                         }

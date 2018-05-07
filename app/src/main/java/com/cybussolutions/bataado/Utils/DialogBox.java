@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cybussolutions.bataado.Activities.HomeScreen;
+import com.cybussolutions.bataado.Activities.Login;
 import com.cybussolutions.bataado.Activities.SignUp;
 import com.cybussolutions.bataado.R;
 
@@ -68,6 +70,7 @@ public class DialogBox {
                     context.finish();
                     context.startActivity(intent);
                 }
+
                 if(type.equals("ok"))
                 {
                     Intent intent = new Intent("android.intent.action.Main_Activity");
@@ -76,6 +79,11 @@ public class DialogBox {
                 }if(type.equals("nothing"))
                 {
 
+                }if(type.equals("signup"))
+                {
+                    Intent intent=new Intent(context, Login.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }if(type.equals("Error"))
                 {
 

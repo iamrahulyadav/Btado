@@ -8,7 +8,7 @@
         android:id="@+id/headingTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search By Category / Location"
+        android:text="Search By Category / Brand"
         android:textColor="#525050"
         android:textStyle="bold"
         android:textSize="15dp"

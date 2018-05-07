@@ -175,40 +175,45 @@ public class Login extends AppCompatActivity {
                             try {
 
                                JSONObject object = new JSONObject(response);
+                                if(object.getString("is_active").equals("1")) {
+                                    userid = object.getString("id");
+                                    name = object.getString("first_name");
+                                    name += " " + object.getString("last_name");
+                                    email = object.getString("email");
+                                    profile_pic = object.getString("profile_pic");
+                                    phone = object.getString("phone_number");
+                                    address = object.getString("address");
 
-                                userid = object.getString("id");
-                                name = object.getString("first_name");
-                                name += " "+object.getString("last_name");
-                                email = object.getString("email");
-                                profile_pic = object.getString("profile_pic");
-                                phone = object.getString("phone_number");
-                                address = object.getString("address");
 
+                                    SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    // Saving string
+                                    editor.putString("user_id", userid);
+                                    editor.putString("user_name", name);
+                                    editor.putString("first_name", object.getString("first_name"));
+                                    editor.putString("last_name", object.getString("last_name"));
+                                    editor.putString("email", email);
+                                    editor.putString("profile_pic", profile_pic);
+                                    editor.putString("phone", phone);
+                                    editor.putString("address", address);
+                                    editor.putString("fb_user", "0");
 
+                                    if (remCheckBox.isChecked()) {
 
-                                SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = pref.edit();
-                                // Saving string
-                                editor.putString("user_id", userid);
-                                editor.putString("user_name",name);
-                                editor.putString("first_name",object.getString("first_name"));
-                                editor.putString("last_name",object.getString("last_name"));
-                                editor.putString("email",email);
-                                editor.putString("profile_pic",profile_pic);
-                                editor.putString("phone",phone);
-                                editor.putString("address",address);
-                                editor.putString("fb_user", "0");
+                                        editor.putString("remmember_me", "loggedin");
 
-                                if(remCheckBox.isChecked())
-                                {
+                                    }
 
-                                    editor.putString("remmember_me","loggedin");
+                                    editor.apply();
 
+                                    getCounts();
+                                }else if(object.getString("is_active").equals("2")){
+                                    new DialogBox(Login.this, "Please verify your email address", "Alert",
+                                            "Error");
+                                }else {
+                                    new DialogBox(Login.this, "Your account has been deactivated by Admin. Please contact Admin for further information", "Alert",
+                                            "Error");
                                 }
-
-                                editor.apply();
-
-                                getCounts();
 
 
 

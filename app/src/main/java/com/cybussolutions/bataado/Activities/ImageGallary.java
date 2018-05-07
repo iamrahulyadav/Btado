@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -58,8 +59,14 @@ public class ImageGallary extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
-        drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+      //  drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
         Intent intent=  getIntent();
         user_id = intent.getStringExtra("userID");
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);

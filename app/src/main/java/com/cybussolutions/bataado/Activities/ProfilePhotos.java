@@ -518,12 +518,15 @@ public class ProfilePhotos extends AppCompatActivity {
                     spacePhoto.setmTitle(innerobj.getString("photo"));
                     spacePhoto.setIsPrimary(innerobj.getString("primary"));
                     spacePhoto.setProfileId(innerobj.getString("id"));
+                    SharedPreferences pref = getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
                     if(innerobj.getString("primary").equals("1")){
-                        SharedPreferences pref = getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
+
                         editor.putString("profile_pic",innerobj.getString("photo"));
                         editor.apply();
                     }
+                    editor.putString("total_photos",String.valueOf(inner.length()));
+                    editor.apply();
                     review_list.add(spacePhoto);
                 }
             }

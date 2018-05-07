@@ -63,10 +63,22 @@ public class draw_addapter extends ArrayAdapter<String>
         }else {
             notifiaction_img.setVisibility(View.INVISIBLE);
         }
+       // int[] images =  new int[] {R.drawable.notification,R.drawable.find_friend,R.drawable.message,R.drawable.profile,R.drawable.logout};
 
 
         name.setText(title[position]);
-        img.setImageResource(imgs[position]);
+        if(position==0){
+            img.setBackground(getContext().getResources().getDrawable(R.drawable.notification));
+        }else if(position==1){
+            img.setBackground(getContext().getResources().getDrawable(R.drawable.find_friend));
+        }else if(position==2){
+            img.setBackground(getContext().getResources().getDrawable(R.drawable.message));
+        }else if(position==3){
+            img.setBackground(getContext().getResources().getDrawable(R.drawable.profile));
+        }else if(position==4){
+            img.setBackground(getContext().getResources().getDrawable(R.drawable.logout));
+        }
+
 
         return rowView;
     }

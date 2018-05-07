@@ -282,7 +282,7 @@ public class Splash extends AppCompatActivity {
 
 
                     Intent intent= new Intent(Splash.this,SignUp.class);
-                    finish();
+                    //finish();
                     startActivity(intent);
                 }
             });

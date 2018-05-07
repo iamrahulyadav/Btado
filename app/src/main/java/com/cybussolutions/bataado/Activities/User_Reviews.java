@@ -82,10 +82,16 @@ public class User_Reviews extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         forCommentPos=-1;
         noOfComments="0";
-        drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
+
 
         Intent intent=  getIntent();
 
@@ -119,7 +125,7 @@ public class User_Reviews extends AppCompatActivity {
 
                         parseJson(response);
 
-                        home_addapter = new Home_Addapter(User_Reviews.this,review_list);
+                        home_addapter = new Home_Addapter(User_Reviews.this,review_list,"");
 
                         reviews_list.setAdapter(home_addapter);
 

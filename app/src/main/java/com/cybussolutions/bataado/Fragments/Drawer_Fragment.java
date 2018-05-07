@@ -1,6 +1,7 @@
 package com.cybussolutions.bataado.Fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,14 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cybussolutions.bataado.Activities.Account_Settings;
 import com.cybussolutions.bataado.Activities.Find_Friends;
 import com.cybussolutions.bataado.Activities.Friend_Request;
+import com.cybussolutions.bataado.Activities.ImageGallary;
 import com.cybussolutions.bataado.Activities.Login;
+import com.cybussolutions.bataado.Activities.MessagesScreen;
+import com.cybussolutions.bataado.Activities.ProfilePhotos;
 import com.cybussolutions.bataado.Activities.User_Friends;
 import com.cybussolutions.bataado.Activities.User_Profile;
+import com.cybussolutions.bataado.Activities.User_Reviews;
 import com.cybussolutions.bataado.Adapter.draw_addapter;
 import com.cybussolutions.bataado.Helper.CircleTransform;
 import com.cybussolutions.bataado.Network.End_Points;
@@ -41,16 +48,16 @@ public class Drawer_Fragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     draw_addapter drawer_addapter;
     TextView username;
-    ImageView profile_image;
+    ImageView profile_image,ivProfile;
     TextView photo,friend,reviews;
 
     String  strphoto,strfriend,strreviews ;
 
 
-    String[] nameArray = new String[] {"Friend Request","Find Friends ","Message","Log Out"};
-    int[] images =  new int[] {R.drawable.notification,R.drawable.find_friend,R.drawable.message,R.drawable.logout};
+    String[] nameArray = new String[] {"Friend Request","Find Friends ","Message","Account Settings","Log Out"};
+    int[] images =  new int[] {R.drawable.notification,R.drawable.find_friend,R.drawable.message,R.drawable.profile,R.drawable.logout};
     ListView drawer_list;
-
+    LinearLayout friendsLayout,reviewsLayout,photosLayout;
     public Drawer_Fragment() {
         // Required empty public constructor
     }
@@ -65,9 +72,13 @@ public class Drawer_Fragment extends Fragment {
         drawer_list = v.findViewById(R.id.drawer_list);
         username = v.findViewById(R.id.drawer_user_name);
         profile_image = v.findViewById(R.id.profile_image);
+        ivProfile = v.findViewById(R.id.ivProfile);
         photo = v.findViewById(R.id.photos_count);
         friend = v.findViewById(R.id.friends_count);
         reviews = v.findViewById(R.id.review_count);
+        friendsLayout=v.findViewById(R.id.friendsLayout);
+        reviewsLayout=v.findViewById(R.id.reviewsLayout);
+        photosLayout=v.findViewById(R.id.photosLayout);
 
         String  strname="";
         final String pp;
@@ -104,6 +115,15 @@ public class Drawer_Fragment extends Fragment {
                 getContext().startActivity(intent);
             }
         });
+        ivProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(getContext(), User_Profile.class);
+                intent.putExtra("username", finalStrname);
+                intent.putExtra("userID",strid);
+                getContext().startActivity(intent);
+            }
+        });
 
         if(pp.equals(""))
         {
@@ -131,8 +151,34 @@ public class Drawer_Fragment extends Fragment {
         }
 
         username.setText(strname);
-
-
+        photosLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ImageGallary.class);
+                intent.putExtra("username", finalStrname);
+                intent.putExtra("userID", strid);
+                intent.putExtra("profilePic", pp);
+                startActivity(intent);
+            }
+        });
+        friendsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), User_Friends.class);
+                intent.putExtra("user_id", strid);
+                startActivity(intent);
+            }
+        });
+        reviewsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), User_Reviews.class);
+                intent.putExtra("username", finalStrname);
+                intent.putExtra("userID", strid);
+                intent.putExtra("profilePic", pp);
+                startActivity(intent);
+            }
+        });
         username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,11 +231,21 @@ public class Drawer_Fragment extends Fragment {
 
                 if (position == 2 )
                 {
-
-
+                    Intent intent = new Intent(getActivity(), MessagesScreen.class);
+                    startActivity(intent);
                 }
-
-                if (position == 3 )
+                if(position==3){
+                    SharedPreferences pref = getActivity().getSharedPreferences("BtadoPrefs", Context.MODE_PRIVATE);
+                    String pp = pref.getString("profile_pic","");
+                    String strname = pref.getString("user_name","");
+                    String strid = pref.getString("user_id","");
+                    Intent intent= new Intent(getContext(), Account_Settings.class);
+                    intent.putExtra("username", strname);
+                    intent.putExtra("userProfile",pp);
+                    intent.putExtra("userID",strid);
+                    startActivity(intent);
+                }
+                if (position == 4 )
                 {
 
                     SharedPreferences pref = getActivity().getSharedPreferences("BtadoPrefs", Context.MODE_PRIVATE);
@@ -249,5 +305,17 @@ public class Drawer_Fragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("BtadoPrefs", getActivity().MODE_PRIVATE);
+        strphoto = pref.getString("total_photos","");
+        strfriend = pref.getString("total_friends","");
+        strreviews = pref.getString("total_reviews","");
 
+
+        photo.setText(strphoto);
+        friend.setText(strfriend);
+        reviews.setText(strreviews);
+    }
 }

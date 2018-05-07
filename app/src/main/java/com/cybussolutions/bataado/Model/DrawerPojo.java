@@ -6,6 +6,73 @@ public class DrawerPojo {
     String user_name;
     String user_image;
     String comment;
+    String brandImage;
+
+    public String getChatFrom() {
+        return chatFrom;
+    }
+
+    public void setChatFrom(String chatFrom) {
+        this.chatFrom = chatFrom;
+    }
+
+    String chatFrom;
+
+    public String getChatBrandId() {
+        return chatBrandId;
+    }
+
+    public void setChatBrandId(String chatBrandId) {
+        this.chatBrandId = chatBrandId;
+    }
+
+    public String getChatFlagId() {
+        return chatFlagId;
+    }
+
+    public void setChatFlagId(String chatFlagId) {
+        this.chatFlagId = chatFlagId;
+    }
+
+    String chatBrandId;
+    String chatFlagId;
+
+    public String getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(String chatType) {
+        this.chatType = chatType;
+    }
+
+    String chatType;
+
+    public String getBrandImage() {
+        return brandImage;
+    }
+
+    public void setBrandImage(String brandImage) {
+        this.brandImage = brandImage;
+    }
+
+    public String getChatKey() {
+        return chatKey;
+    }
+
+    public void setChatKey(String chatKey) {
+        this.chatKey = chatKey;
+    }
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
+    }
+
+    String chatKey;
+    String chatId;
 
     public String getNotificationId() {
         return notificationId;

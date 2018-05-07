@@ -83,7 +83,11 @@ public class CustomDrawerAdapter extends BaseAdapter {
         }else {
             drawerHolder.profile_pic.setVisibility(View.VISIBLE);
         }
-        drawerHolder.tvTitle.setText(drawerItemList.get(position).getUser_name()+" "+drawerItemList.get(position).getComment());
+        if(!pp.equals("icon")) {
+            drawerHolder.tvTitle.setText(drawerItemList.get(position).getUser_name() + " " + drawerItemList.get(position).getComment());
+        }else {
+            drawerHolder.tvTitle.setText(drawerItemList.get(position).getUser_name() + "" + drawerItemList.get(position).getComment());
+        }
         if(dItem.getNotificationFlag().equals("1")){
             drawerHolder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.white));
         }else {
@@ -96,6 +100,11 @@ public class CustomDrawerAdapter extends BaseAdapter {
                     .load(pp)
                     .resize(80, 80)
                     .centerCrop().transform(new CircleTransform())
+                    .into(drawerHolder.profile_pic);
+        }else if(pp.equals("icon")){
+            Picasso.with(context)
+                    .load(R.drawable.chat_noti_icon)
+                    .resize(60, 60)
                     .into(drawerHolder.profile_pic);
         } else {
             if (pp.equals("")) {

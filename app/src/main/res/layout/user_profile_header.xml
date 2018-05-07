@@ -18,8 +18,11 @@
         android:layout_alignParentStart="true"
         android:src="@drawable/profile3"
         app:civ_border_width="2dp"
-        app:civ_border_color="@color/black"
-        android:layout_margin="15dp"/>
+        app:civ_border_color="@color/gray"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="5dp"/>
 
 
 
@@ -54,9 +57,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:weightSum="3"
-        android:layout_below="@+id/firstname"
+        android:layout_below="@+id/pp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp">
+       >
 
 
 
@@ -75,7 +78,7 @@
                 android:layout_height="25dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="30dp"
-                android:background="@drawable/ora_friends"
+                android:background="@drawable/friends"
                 android:id="@+id/imageView12" />
 
             <TextView
@@ -83,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:text="12"
                 android:layout_marginLeft="10dp"
-                android:textSize="18sp"
+                android:textSize="13sp"
                 android:layout_toEndOf="@+id/imageView12"
                 android:layout_marginTop="5dp"
                 android:id="@+id/fr_count" />
@@ -93,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="FRIENDS"
+                android:textSize="13sp"
                 android:id="@+id/textView14"
                 android:layout_below="@+id/imageView12"
               android:layout_centerHorizontal="true"
@@ -115,7 +119,7 @@
                 android:layout_height="25dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="30dp"
-                android:background="@drawable/org_str"
+                android:background="@drawable/rating"
                 android:id="@+id/imageView13" />
 
             <TextView
@@ -123,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:text="12"
                 android:layout_marginLeft="10dp"
-                android:textSize="18sp"
+                android:textSize="13sp"
                 android:layout_toEndOf="@+id/imageView13"
                 android:layout_marginTop="5dp"
                 android:id="@+id/rw_count" />
@@ -135,6 +139,7 @@
                 android:text="REVIEWS"
                 android:id="@+id/textView15"
                 android:layout_below="@+id/imageView13"
+                android:textSize="13sp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold" />
@@ -155,7 +160,7 @@
                 android:layout_height="25dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="30dp"
-                android:background="@drawable/orange_camera"
+                android:background="@drawable/camera"
                 android:id="@+id/imageView14" />
 
             <TextView
@@ -163,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:text="12"
                 android:layout_marginLeft="10dp"
-                android:textSize="18sp"
+                android:textSize="13sp"
                 android:layout_toEndOf="@+id/imageView14"
                 android:layout_marginTop="5dp"
                 android:id="@+id/ph_count" />
@@ -174,7 +179,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="PHOTOS"
                 android:id="@+id/textView16"
-                android:layout_below="@+id/ph_count"
+                android:textSize="13sp"
+                android:layout_below="@+id/imageView14"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold" />
@@ -213,7 +219,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="1">
-
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/location_icon_profile"
+                android:layout_gravity="center_vertical"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -227,7 +239,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cavalry Ground Cannt Lahore"
-                android:layout_margin="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/adress_user"
                 />
 
@@ -251,8 +265,8 @@
 
             <ImageView
                 android:id="@+id/image1"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/rating"
                android:layout_centerVertical="true"/>

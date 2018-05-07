@@ -140,7 +140,9 @@
         </activity>
         <activity android:name=".Activities.FullScreenVedioScreen" />
         <activity android:name=".Activities.Branches" />
-        <activity android:name=".Activities.OpenImage"></activity>
+        <activity android:name=".Activities.OpenImage" />
+        <activity android:name=".Activities.MessagesScreen" />
+        <activity android:name=".Activities.Conversation"></activity>
     </application>
 
 </manifest>

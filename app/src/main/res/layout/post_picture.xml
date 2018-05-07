@@ -23,6 +23,10 @@
     android:layout_height="fill_parent"
     android:background="@drawable/background_dialog"
     >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:background="@color/colorPrimary"/>
     <LinearLayout android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -46,22 +50,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Brand Name"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center_horizontal"
                 android:textSize="20sp"/>
+
                 <ImageView
                     android:id="@+id/cancel_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                    android:layout_alignParentEnd="true"
                     android:background="@android:drawable/ic_delete"/>
+                <TextView
+                    android:id="@+id/textRating"
+                    android:layout_below="@+id/brand_name"
+                    android:text="Select Your Rating"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content" />
                 <RatingBar
+                    android:layout_below="@id/textRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/brand_raiting"
                     android:scaleX="0.45"
                     android:scaleY="0.45"
-                    android:transformPivotX="0dp"
-                    android:transformPivotY="20dp"
-                    android:layout_marginTop="25dp" />
+                    android:transformPivotX="120dp"
+                    android:transformPivotY="5dp"
+                    android:layout_centerHorizontal="true" />
             </RelativeLayout>
 
             <EditText
@@ -70,12 +89,16 @@
                 android:layout_height="wrap_content"
                 android:hint="Start Your Review"
                 android:textColor="#333"
+                android:padding="10dp"
+                android:gravity="left|top"
+                android:background="@drawable/bg_edittext"
                 android:textSize="18sp"
-                android:maxLines="5"
+                android:maxLines="4"
                 android:layout_marginTop="2dp"/>
 
             <ImageView
                 android:visibility="gone"
+                android:layout_marginTop="15dp"
                 android:id="@+id/profilePicture"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -91,25 +114,36 @@
                 android:layout_marginBottom="10dp"
                 android:visibility="gone"
                 android:textColor="@color/colorPrimary"/>
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <Button
-                android:layout_width="150dp"
-                android:padding="10dp"
+                android:layout_width="100dp"
+                android:padding="3dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/full_button_style_green"
                 android:layout_marginBottom="10dp"
+                android:layout_marginStart="36dp"
                 android:id="@+id/uploadVedioPic"
-                android:text="Upload Image/Video"
+                android:layout_toEndOf="@+id/postStatusUpdateButton"
+                android:text="Attachment"
+                android:drawableLeft="@drawable/clip"
+                android:drawablePadding="3dp"
+                android:textAllCaps="false"
                 android:textColor="@color/white"/>
             <Button
-                android:padding="10dp"
+                android:padding="3dp"
                 android:id="@+id/postStatusUpdateButton"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Continue"
+                android:textAllCaps="false"
+                android:text="Post Review"
                 android:textColor="@color/white"
                 android:background="@drawable/full_button_style_green"
                 />
-
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 

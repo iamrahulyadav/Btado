@@ -193,6 +193,7 @@ public class Detailed_Category_activity extends AppCompatActivity {
                             tvNoData.setVisibility(View.VISIBLE);
                             tvNoData.setText("No Data Available in "+cat_name+".");
                         }
+
                         parseJson(response);
 
                         search_detail_addapter = new Search_Detail_Addapter(Detailed_Category_activity.this,brand_list);
@@ -266,8 +267,13 @@ public class Detailed_Category_activity extends AppCompatActivity {
             JSONObject object = new JSONObject(response);
 
             String res = object.getString("brands");
+            if(res.equals("")){
+                tvNoData.setVisibility(View.VISIBLE);
+                tvNoData.setText("No Data Available in "+cat_name+".");
+            }
             String rating = object.getString("rating");
             JSONArray inner = new JSONArray(res);
+
             JSONArray inner1 = new JSONArray(rating);
 
 

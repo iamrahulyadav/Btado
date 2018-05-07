@@ -485,7 +485,7 @@ public class Detail_brand extends AppCompatActivity implements callBack, OnMapRe
 
                         parseJson(response);
 
-                        home_addapter = new Home_Addapter(Detail_brand.this, brand_list);
+                        home_addapter = new Home_Addapter(Detail_brand.this, brand_list,"");
 
                         review_list.setAdapter(home_addapter);
 

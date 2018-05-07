@@ -7,7 +7,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -47,6 +49,7 @@ public class User_Friends extends AppCompatActivity {
     private ArrayList<Home_Model> friends_list= new ArrayList<>();
     private static final int MY_SOCKET_TIMEOUT_MS = 10000 ;
     ProgressDialog ringProgressDialog;
+    TextView tvNoFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +62,15 @@ public class User_Friends extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
-        drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
+      //  drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
 
        Intent intent=  getIntent();
 
@@ -69,6 +78,7 @@ public class User_Friends extends AppCompatActivity {
 
 
         friends_listView = findViewById(R.id.friends_listview);
+        tvNoFriend = findViewById(R.id.tvNoFriend);
 
 
         getUserFriends();
@@ -167,6 +177,9 @@ public class User_Friends extends AppCompatActivity {
             JSONObject object =  new JSONObject(response);
 
             String res = object.getString("friends");
+            if(res.equals("0")){
+                tvNoFriend.setVisibility(View.VISIBLE);
+            }
 
             JSONArray inner = new JSONArray(res);
 

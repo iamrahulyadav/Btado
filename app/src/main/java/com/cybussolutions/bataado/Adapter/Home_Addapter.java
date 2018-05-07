@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -49,25 +52,39 @@ import com.cybussolutions.bataado.Utils.Blur;
 import com.cybussolutions.bataado.Utils.DialogBox;
 import com.cybussolutions.bataado.Utils.TimeAgo;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
 import com.facebook.FacebookCallback;
+import com.facebook.FacebookDialog;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.internal.FacebookWebFallbackDialog;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.AppInviteContent;
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareOpenGraphAction;
+import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.model.ShareOpenGraphObject;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.AppInviteDialog;
 import com.facebook.share.widget.ShareDialog;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -102,11 +119,13 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
     private static final int WEEK_MILLIS = 7 * DAY_MILLIS;
+    String activeContext;
 
-    public Home_Addapter(Activity context, ArrayList<Home_Model> list) {
+    public Home_Addapter(Activity context, ArrayList<Home_Model> list,String activeContext) {
         super(context, R.layout.row_drawer);
         this.context = context;
         this.arraylist = list;
+        this.activeContext=activeContext;
     }
 
     @Override
@@ -250,7 +269,7 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
             public void onClick(View view) {
                 if(!home_model.getShared().equals("1")) {
                     sharePosition = position;
-                    onShareResult(view, home_model.getBrand_name(), home_model.getReviewid());
+                    onShareResult(view, home_model.getBrand_name(), home_model.getReviewid(),home_model.getFile_path(),home_model.getReview(),home_model.getMedia_type());
                 }else {
                     Toast.makeText(context,"Already Shared !",Toast.LENGTH_LONG).show();
                 }
@@ -261,7 +280,7 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
             public void onClick(View view) {
                 if(!home_model.getShared().equals("1")) {
                     sharePosition = position;
-                    onShareResult(view, home_model.getBrand_name(), home_model.getReviewid());
+                    onShareResult(view, home_model.getBrand_name(), home_model.getReviewid(),home_model.getFile_path(),home_model.getReview(),home_model.getMedia_type());
                 }else {
                     Toast.makeText(context,"Already Shared !",Toast.LENGTH_LONG).show();
                 }
@@ -434,7 +453,7 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
                 like.setText(home_model.getTotalLikes() + " Dislike");
                 break;
             case "3":
-                ivLike.setBackground(getContext().getResources().getDrawable(R.drawable.heart_on));
+                ivLike.setBackground(getContext().getResources().getDrawable(R.drawable.useful_on));
                 like.setText(home_model.getTotalLikes() + " Useful");
                 break;
             default:
@@ -558,6 +577,8 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
                         if(response.equals("Review Deleted Successfully") && flag.equals("delete")){
                             arraylist.remove(position);
                             notifyDataSetChanged();
+                            if(activeContext.equals("User_Profile"))
+                            ((User_Profile)context).OnDelete();
                         }else if(response.equals("flag") && flag.equals("Flag")){
                             arraylist.get(position).setInappropriate("1");
                             notifyDataSetChanged();
@@ -598,25 +619,78 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
     }
 
 
-    private void onShareResult(View view, String brandName, String reviewId){
+    private void onShareResult(View view, final String brandName, String reviewId, final String brandLogo, final String review,final String mediaType){
 
         final ShareDialog shareDialog = new ShareDialog(context);
 
         if (ShareDialog.canShow(ShareLinkContent.class)) {
+          /*  final ImageView imageView=new ImageView(context);
+            Picasso.with(context).load(End_Points.IMAGE_RREVIEW_URL+brandLogo).into(imageView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    Bitmap  bitmap = ((BitmapDrawable) context.getResources().getDrawable(R.drawable.email_icon)).getBitmap();*/
+                    SharePhoto photo = new SharePhoto.Builder().setImageUrl(Uri.parse(End_Points.IMAGE_RREVIEW_URL+brandLogo))
+                            .setUserGenerated(true).build();
+            ShareOpenGraphObject object;
+                    if(mediaType.equals("")){
+                         object = new ShareOpenGraphObject.Builder()
+                                .putString("og:type", "article")
+                                .putString("og:url","http://demo.cybussolutions.com/bataado")
+                                .putString("og:title", brandName)
+                                .putString("og:description", review)
+                                //.putString("books:isbn", "0-553-57340-3")
+                                .build();
+                    }else if(!mediaType.equals("video")){
+                         object = new ShareOpenGraphObject.Builder()
+                                .putString("og:type", "article")
+                                .putString("og:url", "http://demo.cybussolutions.com/bataado")
+                                .putString("og:title", brandName)
+                                .putString("og:description", review)
+                                .putPhoto("og:image", photo)
+                                //.putString("books:isbn", "0-553-57340-3")
+                                .build();
+                    }else {
+                        object = new ShareOpenGraphObject.Builder()
+                                .putString("og:type", "article")
+                                .putString("og:url", "http://demo.cybussolutions.com/bataado")
+                                .putString("og:title", brandName)
+                                .putString("og:description", "video")
+                                //.putPhoto("og:image", photo)
+                                //.putString("books:isbn", "0-553-57340-3")
+                                .build();
+                    }
 
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle(brandName)
+                    // Create an action
+                    ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
+                            .setActionType("news.reads")
+                            .putObject("article", object)
+                            .build();
+
+                    ShareOpenGraphContent linkContent = new ShareOpenGraphContent.Builder()
+                            .setPreviewPropertyName("article")
+                            .setAction(action)
+                            .build();
+                    shareDialog.registerCallback(HomeScreen.callbackManager,callback);
+                    shareDialog.show(linkContent, ShareDialog.Mode.AUTOMATIC);
+                }
+
+               /* @Override
+                public void onError() {
+                    Toast.makeText(context,"Please try again something wrong",Toast.LENGTH_LONG).show();
+                }
+            });*/
+
+
+          /*  ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Bataado")
                     .setContentDescription("Bataado")
                     .setContentUrl(Uri.parse("http://demo.cybussolutions.com/bataado"))
-                    .setImageUrl(Uri.parse(End_Points.IMAGE_RREVIEW_URL+"logo.png"))
-                    .build();
-            shareDialog.registerCallback(HomeScreen.callbackManager,callback);
-            shareDialog.show(linkContent, ShareDialog.Mode.AUTOMATIC);
-        }
+                    .setImageUrl(Uri.parse(End_Points.IMAGE_BASE_URL+brandLogo))
+                    .build();*/
+
 
 
     }
-
       private FacebookCallback<Sharer.Result> callback = new FacebookCallback<Sharer.Result>() {
           @Override
           public void onSuccess(Sharer.Result result) {
@@ -973,11 +1047,9 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
             public void onErrorResponse(VolleyError error) {
 
                 if (error instanceof NoConnectionError) {
-                    new DialogBox(context, "No Internet Connection !", "Error",
-                            "Error");
+                    Toast.makeText(context,"No Internet Connection !",Toast.LENGTH_SHORT).show();
                 } else if (error instanceof TimeoutError) {
-                    new DialogBox(context, "Connection Time Out Error", "Error",
-                            "Error");
+                    Toast.makeText(context,"Connection Time Out Error",Toast.LENGTH_SHORT).show();
                 }
             }
         }) {
@@ -1048,11 +1120,9 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
             public void onErrorResponse(VolleyError error) {
 
                 if (error instanceof NoConnectionError) {
-                    new DialogBox(context, "No Internet Connection !", "Error",
-                            "Error");
+                    Toast.makeText(context,"No Internet Connection !",Toast.LENGTH_SHORT).show();
                 } else if (error instanceof TimeoutError) {
-                    new DialogBox(context, "Connection Time Out Error", "Error",
-                            "Error");
+                   Toast.makeText(context,"Connection Time Out Error",Toast.LENGTH_SHORT).show();
                 }
             }
         }) {
@@ -1120,11 +1190,9 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
             public void onErrorResponse(VolleyError error) {
 
                 if (error instanceof NoConnectionError) {
-                    new DialogBox(context, "No Internet Connection !", "Error",
-                            "Error");
+                    Toast.makeText(context,"No Internet Connection !",Toast.LENGTH_SHORT).show();
                 } else if (error instanceof TimeoutError) {
-                    new DialogBox(context, "Connection Time Out Error", "Error",
-                            "Error");
+                    Toast.makeText(context,"Connection Time Out Error",Toast.LENGTH_SHORT).show();
                 }
             }
         }) {

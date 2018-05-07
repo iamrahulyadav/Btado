@@ -159,7 +159,6 @@ public class Account_Settings extends AppCompatActivity {
                         if(newpass.length()>7 && !newpass.contains(" ")) {
                             CheckPass();
                             hideKeyBoard(oldPassword);
-                            alertDialog.dismiss();
                         }
                         else if(newpass.length()<8)
                             Toast.makeText(Account_Settings.this,"Password length must be minimum 8 characters",Toast.LENGTH_LONG).show();
@@ -205,6 +204,7 @@ public class Account_Settings extends AppCompatActivity {
                         ringProgressDialog.dismiss();
 
                         if(response.equals("1")) {
+                            alertDialog.dismiss();
                             Toast.makeText(Account_Settings.this, "Password updated successfully.", Toast.LENGTH_SHORT).show();
                         }else if(response.equals("2")){
                             Toast.makeText(Account_Settings.this, "Your old password does not match", Toast.LENGTH_SHORT).show();
@@ -284,6 +284,8 @@ public class Account_Settings extends AppCompatActivity {
         super.onResume();
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
         String pp = pref.getString("profile_pic","");
+        String strname = pref.getString("user_name","");
+        userName.setText(strname);
         if(pp.equals(""))
         {
             Picasso.with(Account_Settings.this)

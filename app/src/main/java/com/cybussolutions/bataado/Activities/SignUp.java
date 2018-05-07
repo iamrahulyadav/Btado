@@ -36,8 +36,8 @@ public class SignUp extends AppCompatActivity {
 
     Toolbar toolbar;
     Button signUP;
-    EditText username,password,confirm,f_name,l_name;
-    String struser,strpass,str_fname,str_lname,str_cnfrmpass;
+    EditText username,password,confirm,f_name,l_name,phone_number;
+    String struser,strpass,str_fname,str_lname,str_cnfrmpass,str_phone_number;
     private static final int MY_SOCKET_TIMEOUT_MS = 10000 ;
     ProgressDialog ringProgressDialog;
 
@@ -58,6 +58,7 @@ public class SignUp extends AppCompatActivity {
         username = findViewById(R.id.usersignupemail);
         f_name = findViewById(R.id.firstname);
         l_name = findViewById(R.id.userlastname);
+        phone_number = findViewById(R.id.userPhone);
         password = findViewById(R.id.usersignuppassword);
         confirm = findViewById(R.id.userconfirm_password);
         signUP = findViewById(R.id.signup);
@@ -69,15 +70,20 @@ public class SignUp extends AppCompatActivity {
                 struser = username.getText().toString();
                 str_fname = f_name.getText().toString();
                 str_lname = l_name.getText().toString();
+                str_phone_number = phone_number.getText().toString();
                 strpass = password.getText().toString();
                 str_cnfrmpass = confirm.getText().toString();
 
 
-                    if(struser.equals("")||str_fname.equals("")||str_lname.equals("")||strpass.equals("") || str_cnfrmpass.equals(""))
+                    if(struser.equals("")||str_fname.equals("")||str_lname.equals("")||strpass.equals("") || str_cnfrmpass.equals("") || str_phone_number.equals(""))
                     {
                         Toast.makeText(SignUp.this, "Required Fields are missing", Toast.LENGTH_SHORT).show();
                     }else  if(!FieldValidator.ValidateEmail(SignUp.this, struser)){
                         Toast.makeText(SignUp.this, "Invalid Email Address", Toast.LENGTH_SHORT).show();
+                    }else if(!FieldValidator.lengthValidator(SignUp.this,str_phone_number,13,15,"Phone")){
+                        Toast.makeText(SignUp.this, "Phone number minimum has 13 digits", Toast.LENGTH_SHORT).show();
+                    }else if(!FieldValidator.lengthValidator(SignUp.this,strpass,8,100,"Password")){
+                       // Toast.makeText(SignUp.this, "Password should have minimum 8 characters", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
@@ -165,9 +171,9 @@ public class SignUp extends AppCompatActivity {
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
                                             sDialog.dismiss();*/
-                            new DialogBox(SignUp.this, "User Created Successfully ", "",
+                            new DialogBox(SignUp.this, "Verification Email Sent Successfully", "signup",
                                     "SuccessSignUP");
-                                            SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+                                           /* SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
                                             SharedPreferences.Editor editor = pref.edit();
                                             // Saving string
                                             editor.putString("total_reviews", "0");
@@ -179,7 +185,8 @@ public class SignUp extends AppCompatActivity {
                                             editor.putString("profile_pic","");
 
 
-                                            editor.apply();
+                                            editor.apply();*/
+
 /*
                                         }
                                     })
@@ -211,6 +218,7 @@ public class SignUp extends AppCompatActivity {
                 params.put("fname",str_fname);
                 params.put("fb_id","");
                 params.put("lname",str_lname);
+                params.put("phone",str_phone_number);
                 params.put("password",strpass);
                 params.put("image","");
                 return params;

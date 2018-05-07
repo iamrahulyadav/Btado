@@ -69,5 +69,8 @@ public class End_Points
     public static final String SEARCH_CITY = BASE_URL+"searchCity";
     public static final String GET_BRANDS_BY_CATEGORY = BASE_URL+"get_brands_by_category";
     public static final String GET_BRANDS_BY_BRAND_NAME = BASE_URL+"get_brands_by_brandname";
+    public static final String GET_MESSAGES = BASE_URL+"getMessages";
+    public static final String GET_CONVERSATION = BASE_URL+"getConversation";
+    public static final String SEND_MESSAGE = BASE_URL+"sendMessage";
 
 }

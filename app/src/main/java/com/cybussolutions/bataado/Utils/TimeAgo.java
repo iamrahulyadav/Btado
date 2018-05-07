@@ -82,6 +82,8 @@ public class TimeAgo {
 
         //  time difference in milli seconds
         long different = endDate.getTime() - startDate.getTime();
+      //  if(different<0)
+            different=different+(60*60*1000);
 
         if (context==null) {
             if (different < MINUTE_MILLIS) {

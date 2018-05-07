@@ -65,11 +65,11 @@ public class User_Profile extends AppCompatActivity {
     String user_id, email, profile_pic, adress;
     String review_count, username, photo_count, friends_count, userInfo, f_name, userId, friendsStatus;
     ImageView pp;
-    TextView usernameTXT, firstname, adressTXT, review, photo, friend,num_reviews_user;
+    TextView usernameTXT, firstname, adressTXT, review, photo, friend,num_reviews_user,tvMyFeeds;
     private ArrayList<Home_Model> review_list = new ArrayList<>();
     Home_Addapter home_addapter = null;
     RelativeLayout freinds_layout, reviews_layout, photos_layout,linearReviews;
-
+    public static String noOfReviews="0";
     Button sendRequest;
     String notification_id,flag;
     private CallbackManager callbackManager;
@@ -79,6 +79,7 @@ public class User_Profile extends AppCompatActivity {
         setContentView(R.layout.user_profile);
         forCommentPos=-1;
         noOfComments="0";
+        noOfReviews="1";
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -128,6 +129,7 @@ public class User_Profile extends AppCompatActivity {
         reviews_layout = header.findViewById(R.id.reviews_layout);
         photos_layout = header.findViewById(R.id.photos_layout);
         linearReviews = header.findViewById(R.id.linearReviews);
+        tvMyFeeds = header.findViewById(R.id.textView18);
         linearReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +152,7 @@ public class User_Profile extends AppCompatActivity {
         profile_footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String pp = pref.getString("profile_pic","");
+              /*  String pp = pref.getString("profile_pic","");
                 String strname = pref.getString("user_name","");
                 String strid = pref.getString("user_id","");
                 Intent intent= new Intent(User_Profile.this, Account_Settings.class);
@@ -158,7 +160,7 @@ public class User_Profile extends AppCompatActivity {
                 intent.putExtra("userProfile",pp);
                 intent.putExtra("userID",strid);
                 finish();
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
         sendRequest.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +181,8 @@ public class User_Profile extends AppCompatActivity {
         });
         if (user_id.equals(Currentuserid)) {
             sendRequest.setVisibility(View.GONE);
+        }else {
+            tvMyFeeds.setText("Reviews");
         }
 
         addUserCounts();
@@ -315,7 +319,138 @@ public class User_Profile extends AppCompatActivity {
 
 
     }
+    public void addUserCounts1() {
 
+
+        StringRequest request = new StringRequest(Request.Method.POST, End_Points.GET_COUNT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Toast.makeText(Login.this,response, Toast.LENGTH_SHORT).show();
+
+
+                        try {
+                            JSONObject object = new JSONObject(response);
+
+                            review_count = object.getString("total_reviews");
+                            photo_count = object.getString("total_photos");
+                            friends_count = object.getString("total_friends");
+                            friendsStatus = object.getString("friendsStatus");
+                            userInfo = object.getString("userInfo");
+
+
+                            JSONObject userIn = new JSONObject(userInfo);
+
+                            email = userIn.getString("email");
+                            profile_pic = userIn.getString("profile_pic");
+                            adress = userIn.getString("adress");
+                            f_name = userIn.getString("first_name");
+                            userId = userIn.getString("id");
+                            if (profile_pic.equals("")) {
+                                Picasso.with(User_Profile.this)
+                                        .load("http://bataado.cybussolutions.com/uploads/no-image-icon-hi.png")
+                                        .resize(150, 150)
+                                        .centerCrop().transform(new CircleTransform())
+                                        .into(pp);
+                            } else {
+
+                                if (profile_pic.startsWith("https://graph.facebook.com/")|| profile_pic.startsWith("https://scontent.xx.fbcdn.net/") || profile_pic.startsWith("http://graph.facebook.com/")) {
+                                    Picasso.with(User_Profile.this)
+                                            .load(profile_pic)
+                                            .resize(150, 150)
+                                            .centerCrop().transform(new CircleTransform())
+                                            .into(pp);
+                                } else {
+                                    Picasso.with(User_Profile.this)
+                                            .load(End_Points.IMAGE_PROFILE_PIC + profile_pic)
+                                            .resize(150, 150)
+                                            .centerCrop().transform(new CircleTransform())
+                                            .into(pp);
+
+                                }
+
+                            }
+                            firstname.setText("Pakistan");
+                            if(adress.equals("") || adress.equals("null") || adress==null)
+                                adress="no Location Found";
+                            usernameTXT.setText(username);
+
+                            adressTXT.setText(adress);
+                            review.setText(review_count);
+                            //noOfReviews=review_count;
+                            num_reviews_user.setText(review_count);
+                            photo.setText(photo_count);
+                            friend.setText(friends_count);
+                            SharedPreferences pref = getApplicationContext().getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+
+                            String uid = pref.getString("user_id","");
+                            if(user_id.equals(uid)) {
+                                SharedPreferences.Editor editor = pref.edit();
+                                // Saving string
+                                editor.putString("total_reviews", review_count);
+                                editor.putString("total_photos", photo_count);
+                                editor.putString("total_friends", friends_count);
+                                editor.apply();
+                                editor.commit();
+                                drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
+                            }
+                            if (friendsStatus.equals("{\"status\":\"1\"}")) {
+                                friendsStatus = "1";
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.friends_btn));
+                            } else if (friendsStatus.equals("{\"status\":\"0\"}")) {
+                                friendsStatus = "0";
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.pending));
+                            } else {
+                                friendsStatus = "2";
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.add_friend));
+                            }
+
+                          //  getUserReview();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+                if (error instanceof NoConnectionError) {
+                    new DialogBox(User_Profile.this, "No Internet Connection !", "Error",
+                            "Error");
+                } else if (error instanceof TimeoutError) {
+
+                    new DialogBox(User_Profile.this, "Connection Time Out Error", "Error",
+                            "Error");
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                final SharedPreferences pref = getSharedPreferences("BtadoPrefs", MODE_PRIVATE);
+                final String Currentuserid = pref.getString("user_id", "");
+                params.put("user_id", user_id);
+                params.put("stalkerID", Currentuserid);
+
+                return params;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(request);
+
+
+    }
     public void addUserCounts() {
 
 
@@ -343,7 +478,6 @@ public class User_Profile extends AppCompatActivity {
                             adress = userIn.getString("adress");
                             f_name = userIn.getString("first_name");
                             userId = userIn.getString("id");
-
                             if (profile_pic.equals("")) {
                                 Picasso.with(User_Profile.this)
                                         .load("http://bataado.cybussolutions.com/uploads/no-image-icon-hi.png")
@@ -352,7 +486,7 @@ public class User_Profile extends AppCompatActivity {
                                         .into(pp);
                             } else {
 
-                                if (profile_pic.startsWith("https://graph.facebook.com/")) {
+                                if (profile_pic.startsWith("https://graph.facebook.com/")|| profile_pic.startsWith("https://scontent.xx.fbcdn.net/") || profile_pic.startsWith("http://graph.facebook.com/")) {
                                     Picasso.with(User_Profile.this)
                                             .load(profile_pic)
                                             .resize(150, 150)
@@ -368,11 +502,14 @@ public class User_Profile extends AppCompatActivity {
                                 }
 
                             }
-
+                            firstname.setText("Pakistan");
+                            if(adress.equals("") || adress.equals("null") || adress==null)
+                                adress="no Location Found";
                             usernameTXT.setText(username);
-                            firstname.setText(f_name);
+
                             adressTXT.setText(adress);
                             review.setText(review_count);
+                            //noOfReviews=review_count;
                             num_reviews_user.setText(review_count);
                             photo.setText(photo_count);
                             friend.setText(friends_count);
@@ -461,7 +598,7 @@ public class User_Profile extends AppCompatActivity {
 
                         parseJson(response);
 
-                        home_addapter = new Home_Addapter(User_Profile.this, review_list);
+                        home_addapter = new Home_Addapter(User_Profile.this, review_list,"User_Profile");
 
                         reviews_list.setAdapter(home_addapter);
 
@@ -635,6 +772,9 @@ public class User_Profile extends AppCompatActivity {
             home_addapter.notifyDataSetChanged();
             forCommentPos=-1;
         }
+    }
+    public void OnDelete(){
+        addUserCounts1();
     }
 }
 

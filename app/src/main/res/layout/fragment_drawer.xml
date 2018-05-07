@@ -32,7 +32,7 @@
         android:layout_height="60dp"
         android:src="@drawable/profile3"
         app:civ_border_width="2dp"
-        app:civ_border_color="@color/black"
+        app:civ_border_color="@color/gray"
         android:layout_marginStart="15dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -51,6 +51,16 @@
         android:layout_toEndOf="@+id/profile_image"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp" />
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/profile_image"
+        android:layout_width="10dp"
+        android:background="@drawable/next"
+        android:layout_height="20dp"
+       android:layout_marginTop="15dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -64,30 +74,32 @@
 
 
         <LinearLayout
+            android:id="@+id/friendsLayout"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.27">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginLeft="20dp"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/friends"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+               android:layout_gravity="center_vertical"
                 android:layout_marginLeft="40dp"
                 android:id="@+id/friends_count" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="40dp"
                 android:id="@+id/textView7"
                 android:text="Friends" />
@@ -95,60 +107,64 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/reviewsLayout"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.27">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginLeft="20dp"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/rating"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="40dp"
                 android:id="@+id/review_count" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="40dp"
                 android:id="@+id/textView12"
                 android:text="reviews" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/photosLayout"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.27">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginLeft="20dp"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/camera"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="40dp"
                 android:id="@+id/photos_count" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="40dp"
                 android:id="@+id/textView13"
                 android:text="Photos" />

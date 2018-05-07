@@ -1,6 +1,7 @@
 package com.cybussolutions.bataado.Activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.RecoverySystem;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -92,9 +94,14 @@ import java.io.FileInputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -114,7 +121,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     private static final int MY_SOCKET_TIMEOUT_MS = 10000;
     ProgressDialog ringProgressDialog;
     private ArrayList<Brands_Model> list = new ArrayList<>();
-    private ArrayList<Home_Model> brand_list = new ArrayList<>();
+    private ArrayList<Home_Model> brand_list;// = new ArrayList<>();
     TextView brand_name,tvCongrats;
     ImageView brand_image, next, previous,crownIcon;
     ImageView search_footer,home_footer, logo,profile_footer;
@@ -144,8 +151,8 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     ImageView post_picture;
     String fileType,file;
     TextView removePicOrVideo;
-    private long fileSize = 0;
-    private int progressBarStatus = 0;
+    private static long fileSize = 0;
+    private static int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
     Bitmap bitmap;
     private String imagepath = null;
@@ -158,6 +165,9 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     ArrayList<String> tableName;
     String searchCategoryId,searchTableName;
     SwipeRefreshLayout mySwipeRefreshLayout;
+    static Activity activity;
+    Calendar now;
+    String currentMonth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,9 +177,11 @@ public class HomeScreen extends AppCompatActivity implements callBack {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         FacebookSdk.sdkInitialize(HomeScreen.this);
         callbackManager = CallbackManager.Factory.create();
+        activity=HomeScreen.this;
+         now = Calendar.getInstance();
         getAllBrands();
 
-        getAllReview();
+
 
         toolbar = findViewById(R.id.app_bar);
         toolbar.setTitle("");
@@ -338,10 +350,9 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                 String pp = pref.getString("profile_pic","");
                 String strname = pref.getString("user_name","");
                 String strid = pref.getString("user_id","");
-                Intent intent= new Intent(HomeScreen.this, Account_Settings.class);
+                Intent intent = new Intent(HomeScreen.this, User_Profile.class);
                 intent.putExtra("username", strname);
-                intent.putExtra("userProfile",pp);
-                intent.putExtra("userID",strid);
+                intent.putExtra("userID", strid);
                 startActivity(intent);
             }
         });
@@ -468,7 +479,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(!dataList.get(position).getNotificationId().equals("") && !dataList.get(position).getComment().equals("No notification found")&& !dataList.get(position).getComment().equals("No Internet Connection")&& !dataList.get(position).getComment().equals("You have new Friend Request.")&& !dataList.get(position).getComment().equals("Accepted your Friend Request.")) {
+                if(!dataList.get(position).getNotificationId().equals("") && !dataList.get(position).getComment().equals("No notification found")&& !dataList.get(position).getComment().equals("No Internet Connection")&& !dataList.get(position).getComment().equals("You have new Friend Request.")&& !dataList.get(position).getComment().equals("Accepted your Friend Request.") && !dataList.get(position).getComment().startsWith("You have recieved a new message from")) {
                     Intent intent = new Intent(HomeScreen.this, Detail_Review.class);
                     intent.putExtra("review_id", dataList.get(position).getReviewId());
                     intent.putExtra("noti_id", dataList.get(position).getNotificationId());
@@ -500,6 +511,24 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                     intent.putExtra("userID", dataList.get(position).getReviewId());
                     intent.putExtra("noti_id", dataList.get(position).getNotificationId());
                     intent.putExtra("flag", dataList.get(position).getNotificationFlag());
+                    if (!dataList.get(position).getNotificationFlag().equals("1")) {
+                        count--;
+                        dataList.get(position).setNotificationFlag("1");
+                        dataList.remove(position);
+                        notifIcon.setImageDrawable(buildCounterDrawable(count, R.drawable.notif_icon));
+                        adapterDrawer.notifyDataSetChanged();
+                    }
+                    startActivity(intent);
+                }else if(dataList.get(position).getComment().startsWith("You have recieved a new message from")){
+                    Intent intent = new Intent(HomeScreen.this, Conversation.class);
+                    intent.putExtra("chatKey", dataList.get(position).getChatKey());
+                    intent.putExtra("chatId", dataList.get(position).getChatId());
+                    intent.putExtra("brandLogo", dataList.get(position).getBrandImage());
+                    intent.putExtra("chatType", dataList.get(position).getChatType());
+                    intent.putExtra("chat_brand_id", dataList.get(position).getChatBrandId());
+                    intent.putExtra("chat_flag_id", dataList.get(position).getChatFlagId());
+                    intent.putExtra("chatFrom", dataList.get(position).getChatFrom());
+                   // intent.putExtra("flag", dataList.get(position).getNotificationFlag());
                     if (!dataList.get(position).getNotificationFlag().equals("1")) {
                         count--;
                         dataList.get(position).setNotificationFlag("1");
@@ -982,15 +1011,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                     UploadFile uploadFile = new UploadFile();
                     uploadFile.delegate = HomeScreen.this;
                     uploadFile.execute(path);
-                    progressBar = new ProgressDialog(HomeScreen.this);
-                    progressBar.setCancelable(false);
-                    progressBar.setMessage("Uploading ...");
-                    progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    progressBar.setProgress(0);
-                    progressBar.setMax(100);
-                    progressBar.show();
-                    progressBarStatus = 0;
-                    fileSize = 0;
+
                   /*  new Thread(new Runnable() {
                         public void run() {
                             while (progressBarStatus < 99) {
@@ -1033,7 +1054,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
 
     }
-    static class  UploadFile extends AsyncTask<String,Integer,String>
+    static class  UploadFile extends AsyncTask<String,Integer,String> implements RecoverySystem.ProgressListener
     {
         public callBack delegate = null;
         private String upLoadServerUri = null;
@@ -1042,7 +1063,16 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
         @Override
         protected void onPreExecute() {
-
+            progressBar = new ProgressDialog(activity);
+            progressBar.setCancelable(false);
+            progressBar.setMessage("Uploading ...");
+            progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressBar.setProgress(0);
+            progressBar.setSecondaryProgress(0);
+            progressBar.setMax(100);
+            progressBar.show();
+            progressBarStatus = 0;
+            fileSize = 0;
 
             super.onPreExecute();
         }
@@ -1114,8 +1144,8 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                     bytesRead = fileInputStream.read(buffer, 0, bufferSize);
                     long total = 0;
                     while (bytesRead > 0) {
-
-                        dos.write(buffer, 0, bufferSize);
+                        dos.write(buffer, 0, bytesRead);
+                        total += bytesRead;
                         bytesAvailable = fileInputStream.available();
                         bufferSize = Math.min(bytesAvailable, maxBufferSize);
                         bytesRead = fileInputStream.read(buffer, 0, bufferSize);
@@ -1167,6 +1197,10 @@ public class HomeScreen extends AppCompatActivity implements callBack {
             delegate.processFinish(s);
         }
 
+        @Override
+        public void onProgress(int progress) {
+            progressBar.setProgress(progress);
+        }
     }
     public int doOperation() {
         //The range of ProgressDialog starts from 0 to 10000
@@ -1274,13 +1308,15 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     }
 
     public void getAllBrands() {
-
+        ringProgressDialog = ProgressDialog.show(HomeScreen.this, "", "Please wait ...", true);
+        ringProgressDialog.setCancelable(false);
+        ringProgressDialog.show();
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.GET_ALL_BRANDS,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-
+                        ringProgressDialog.dismiss();
                         JSONArray inner;
                         try {
                             inner = new JSONArray(response);
@@ -1315,13 +1351,14 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                 .centerCrop().transform(new CircleTransform())
                                 .placeholder(R.drawable.profile_fotter)
                                 .into(brand_image);
+                        getAllReview();
 
                     }
 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                ringProgressDialog.dismiss();
                 if (error instanceof NoConnectionError) {
                     new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error!")
@@ -1367,11 +1404,9 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
 
     public void getAllReview() {
-
-        ringProgressDialog = ProgressDialog.show(this, "", "Please wait ...", true);
+        ringProgressDialog = ProgressDialog.show(HomeScreen.this, "", "Please wait ...", true);
         ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
-
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.GET_ALL_REVIEWS,
                 new Response.Listener<String>() {
                     @Override
@@ -1380,7 +1415,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
                         parseJson(response);
 
-                        home_addapter = new Home_Addapter(HomeScreen.this, brand_list);
+                        home_addapter = new Home_Addapter(HomeScreen.this, brand_list,"");
 
                         home_list.setAdapter(home_addapter);
                         getNotifications();
@@ -1442,14 +1477,15 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     }
 
     private void getNotifications() {
-        ringProgressDialog = ProgressDialog.show(this, "", "Please wait ...", true);
+        /*ringProgressDialog = ProgressDialog.show(this, "", "Please wait ...", true);
         ringProgressDialog.setCancelable(false);
-        ringProgressDialog.show();
+        ringProgressDialog.show();*/
 
         StringRequest request = new StringRequest(Request.Method.POST, End_Points.GET_NOTIFICATIONS,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        count=0;
 
                         ringProgressDialog.dismiss();
                         try {
@@ -1463,9 +1499,10 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                             String shares = object.getString("shares");
                             String friendRequests = object.getString("friendRequest");
                             String friendRequestAccepted = object.getString("friendRequestAccepted");
+                            String messages = object.getString("messages");
 
 
-                            if(res.equals("false") && likeRes.equals("false") && unlikeRes.equals("false")&& usefulRes.equals("false") && friendRequests.equals("false") && friendRequestAccepted.equals("false") && shares.equals("false")){
+                            if(res.equals("false") && likeRes.equals("false") && unlikeRes.equals("false")&& usefulRes.equals("false") && friendRequests.equals("false") && friendRequestAccepted.equals("false") && shares.equals("false") && messages.equals("false")){
                                 DrawerPojo drawerPojo=new DrawerPojo();
                                 drawerPojo.setUser_image("");
                                 drawerPojo.setUser_name("");
@@ -1474,8 +1511,41 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                 drawerPojo.setDate("");
                                 drawerPojo.setNotificationId("");
                                 drawerPojo.setTableName("");
+                                drawerPojo.setBrandImage("");
+                                drawerPojo.setChatId("");
+                                drawerPojo.setChatKey("");
+                                drawerPojo.setChatType("");
+                                drawerPojo.setChatBrandId("");
+                                drawerPojo.setChatFlagId("");
+                                drawerPojo.setChatFrom("");
                                 drawerPojo.setNotificationFlag("");
                                 dataList.add(drawerPojo);
+                            }
+                            if(!messages.equals("false")){
+                                JSONArray inner6 = new JSONArray(messages);
+                                for(int i=0;i<inner6.length();i++){
+                                    DrawerPojo drawerPojo=new DrawerPojo();
+                                    JSONObject innerobj = inner6.getJSONObject(i);
+                                    drawerPojo.setUser_image("icon");
+                                    drawerPojo.setUser_name("");
+                                    drawerPojo.setComment("You have recieved a new message from "+ innerobj.getString("brand_name"));
+                                    drawerPojo.setReviewId(innerobj.getString("uid"));
+                                    drawerPojo.setDate(innerobj.getString("creation_date"));
+                                    drawerPojo.setNotificationId(innerobj.getString("noti_id"));
+                                    drawerPojo.setTableName("");
+                                    drawerPojo.setBrandImage(innerobj.getString("brand_logo"));
+                                    drawerPojo.setChatId(innerobj.getString("chat_id"));
+                                    drawerPojo.setChatKey(innerobj.getString("chat_key"));
+                                    drawerPojo.setChatType(innerobj.getString("chat_flag"));
+                                    drawerPojo.setChatBrandId(innerobj.getString("chat_brand_id"));
+                                    drawerPojo.setChatFlagId(innerobj.getString("chat_flag_id"));
+                                    drawerPojo.setChatFrom(innerobj.getString("chat_from"));
+                                    drawerPojo.setNotificationFlag(innerobj.getString("notification_flag"));
+                                    if(innerobj.getString("notification_flag").equals("0")){
+                                        count++;
+                                    }
+                                    dataList.add(drawerPojo);
+                                }
                             }
                             if(!friendRequestAccepted.equals("false")){
                                 JSONArray inner5 = new JSONArray(friendRequestAccepted);
@@ -1488,7 +1558,14 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                     drawerPojo.setReviewId(innerobj.getString("uid"));
                                     drawerPojo.setDate(innerobj.getString("creation_date"));
                                     drawerPojo.setNotificationId(innerobj.getString("noti_id"));
+                                    drawerPojo.setBrandImage("");
+                                    drawerPojo.setChatId("");
+                                    drawerPojo.setChatKey("");
+                                    drawerPojo.setChatType("");
                                     drawerPojo.setTableName("");
+                                    drawerPojo.setChatBrandId("");
+                                    drawerPojo.setChatFlagId("");
+                                    drawerPojo.setChatFrom("");
                                     drawerPojo.setNotificationFlag(innerobj.getString("notification_flag"));
                                     if(innerobj.getString("notification_flag").equals("0")){
                                         count++;
@@ -1507,7 +1584,14 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                     drawerPojo.setReviewId("");
                                     drawerPojo.setDate(innerobj.getString("creation_date"));
                                     drawerPojo.setNotificationId(innerobj.getString("noti_id"));
+                                    drawerPojo.setBrandImage("");
+                                    drawerPojo.setChatId("");
+                                    drawerPojo.setChatKey("");
+                                    drawerPojo.setChatType("");
                                     drawerPojo.setTableName("");
+                                    drawerPojo.setChatBrandId("");
+                                    drawerPojo.setChatFlagId("");
+                                    drawerPojo.setChatFrom("");
                                     drawerPojo.setNotificationFlag(innerobj.getString("notification_flag"));
                                     if(innerobj.getString("notification_flag").equals("0")){
                                         count++;
@@ -1528,6 +1612,13 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                     drawerPojo.setDate(innerobj.getString("creation_date"));
                                     drawerPojo.setNotificationId(innerobj.getString("noti_id"));
                                     drawerPojo.setTableName("reviews_share");
+                                    drawerPojo.setBrandImage("");
+                                    drawerPojo.setChatId("");
+                                    drawerPojo.setChatKey("");
+                                    drawerPojo.setChatType("");
+                                    drawerPojo.setChatBrandId("");
+                                    drawerPojo.setChatFlagId("");
+                                    drawerPojo.setChatFrom("");
                                     drawerPojo.setNotificationFlag(innerobj.getString("notification_flag"));
                                     if(innerobj.getString("notification_flag").equals("0")){
                                         count++;
@@ -1549,6 +1640,13 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                     drawerPojo.setDate(innerobj.getString("creation_date"));
                                     drawerPojo.setNotificationId(innerobj.getString("noti_id"));
                                     drawerPojo.setTableName("reviews_useful");
+                                    drawerPojo.setBrandImage("");
+                                    drawerPojo.setChatId("");
+                                    drawerPojo.setChatKey("");
+                                    drawerPojo.setChatType("");
+                                    drawerPojo.setChatBrandId("");
+                                    drawerPojo.setChatFlagId("");
+                                    drawerPojo.setChatFrom("");
                                     drawerPojo.setNotificationFlag(innerobj.getString("notification_flag"));
                                     if(innerobj.getString("notification_flag").equals("0")){
                                         count++;
@@ -1570,6 +1668,13 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                     drawerPojo.setDate(innerobj.getString("creation_date"));
                                     drawerPojo.setNotificationId(innerobj.getString("noti_id"));
                                     drawerPojo.setTableName("reviews_dislike");
+                                    drawerPojo.setBrandImage("");
+                                    drawerPojo.setChatId("");
+                                    drawerPojo.setChatKey("");
+                                    drawerPojo.setChatType("");
+                                    drawerPojo.setChatBrandId("");
+                                    drawerPojo.setChatFlagId("");
+                                    drawerPojo.setChatFrom("");
                                     drawerPojo.setNotificationFlag(innerobj.getString("notification_flag"));
                                     if(innerobj.getString("notification_flag").equals("0")){
                                         count++;
@@ -1591,6 +1696,13 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                     drawerPojo.setDate(innerobj.getString("creation_date"));
                                     drawerPojo.setNotificationId(innerobj.getString("noti_id"));
                                     drawerPojo.setTableName("reviews_like");
+                                    drawerPojo.setBrandImage("");
+                                    drawerPojo.setChatId("");
+                                    drawerPojo.setChatKey("");
+                                    drawerPojo.setChatType("");
+                                    drawerPojo.setChatBrandId("");
+                                    drawerPojo.setChatFlagId("");
+                                    drawerPojo.setChatFrom("");
                                     drawerPojo.setNotificationFlag(innerobj.getString("notification_flag"));
                                     if(innerobj.getString("notification_flag").equals("0")){
                                         count++;
@@ -1612,6 +1724,13 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                     drawerPojo.setDate(innerobj.getString("creation_date"));
                                     drawerPojo.setNotificationId(innerobj.getString("noti_id"));
                                     drawerPojo.setTableName("review_history");
+                                    drawerPojo.setBrandImage("");
+                                    drawerPojo.setChatId("");
+                                    drawerPojo.setChatKey("");
+                                    drawerPojo.setChatType("");
+                                    drawerPojo.setChatBrandId("");
+                                    drawerPojo.setChatFlagId("");
+                                    drawerPojo.setChatFrom("");
                                     drawerPojo.setNotificationFlag(innerobj.getString("notification_flag"));
                                     if(innerobj.getString("notification_flag").equals("0")){
                                         count++;
@@ -1640,6 +1759,12 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                 drawerPojo.setComment("No Internet Connection");
                 drawerPojo.setReviewId("");
                 drawerPojo.setDate("");
+                drawerPojo.setBrandImage("");
+                drawerPojo.setChatId("");
+                drawerPojo.setChatKey("");
+                drawerPojo.setChatBrandId("");
+                drawerPojo.setChatFlagId("");
+                drawerPojo.setChatFrom("");
                 drawerPojo.setNotificationId("");
                 drawerPojo.setTableName("");
                 drawerPojo.setNotificationFlag("");
@@ -1647,7 +1772,8 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                 adapterDrawer = new CustomDrawerAdapter(HomeScreen.this, R.layout.list_item_drawer, dataList);
                 mDrawerList.setAdapter(adapterDrawer);
                 if (error instanceof NoConnectionError) {
-                    new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
+                    Toast.makeText(HomeScreen.this,"No Internet Connection",Toast.LENGTH_LONG).show();
+                   /* new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error!")
                             .setConfirmText("OK").setContentText("No Internet Connection")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -1657,11 +1783,11 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
                                 }
                             })
-                            .show();
+                            .show();*/
                 } else if (error instanceof TimeoutError) {
 
-
-                    new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
+                    Toast.makeText(HomeScreen.this,"Connection Time Out Error",Toast.LENGTH_LONG).show();
+                  /*  new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error!")
                             .setConfirmText("OK").setContentText("Connection Time Out Error")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -1671,7 +1797,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
                                 }
                             })
-                            .show();
+                            .show();*/
                 }
             }
         }) {
@@ -1724,6 +1850,9 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                         }
                                     })
                                     .show();
+                        }else if(response.equals("You cannot post review"))
+                        {
+                            Toast.makeText(HomeScreen.this,"Brand owner cannot post review",Toast.LENGTH_LONG).show();
                         } else {
 
                             new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.SUCCESS_TYPE)
@@ -1807,7 +1936,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     public void parseJson(String response) {
 
         try {
-
+            brand_list = new ArrayList<>();
             JSONObject object = new JSONObject(response);
 
             String res = object.getString("recent_reviews");
@@ -1907,6 +2036,8 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                 topReviewerUserId=innerobj.getString("tr_user_id");
                 topReviewerUserName=innerobj.getString("tr_user_name");
                 topReviewerName.setText("Congratulations " +"\n"+ innerobj.getString("tr_user_name") + " !");
+                String month=getMonth();
+                tvCongrats.setText("On becoming top reviewer for "+ month);
             }
         }else {
                 topReviewerUserId="";
@@ -2039,6 +2170,8 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                                         }
                                     })
                                     .show();
+                        }else if(response.equals("You cannot post review")){
+                            Toast.makeText(HomeScreen.this,"Brand owner cannot post review",Toast.LENGTH_LONG).show();
                         } else {
 
                             new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.SUCCESS_TYPE)
@@ -2122,10 +2255,18 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     @Override
     protected void onResume() {
         super.onResume();
+       // drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
         if(forCommentPos!=-1){
             brand_list.get(forCommentPos).setTotalComments(noOfComments);
             home_addapter.notifyDataSetChanged();
             forCommentPos=-1;
         }
+    }
+    private static String getMonth() {
+        Date d = new Date();//SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        String monthName = new SimpleDateFormat("MMMM").format(cal.getTime());
+        return monthName;
     }
 }

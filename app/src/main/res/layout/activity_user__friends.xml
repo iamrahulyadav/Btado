@@ -32,7 +32,15 @@
 
         </ListView>
 
-
+        <TextView
+            android:id="@+id/tvNoFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Friends Found"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:visibility="gone"/>
 
         <ImageView
             android:layout_width="50dp"

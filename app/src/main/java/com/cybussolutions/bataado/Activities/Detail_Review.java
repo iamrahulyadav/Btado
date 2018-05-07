@@ -96,7 +96,7 @@ public class Detail_Review extends AppCompatActivity {
 
                         parseJson(response);
 
-                        home_addapter = new Home_Addapter(Detail_Review.this, brand_list);
+                        home_addapter = new Home_Addapter(Detail_Review.this, brand_list,"");
 
                         home_list.setAdapter(home_addapter);
                     }

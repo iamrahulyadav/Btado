@@ -1,6 +1,7 @@
 package com.cybussolutions.bataado.Activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.RecoverySystem;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -66,6 +68,10 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareOpenGraphAction;
+import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.model.ShareOpenGraphObject;
+import com.facebook.share.model.SharePhoto;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -118,13 +124,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int MY_SOCKET_TIMEOUT_MS = 10000;
     private ArrayList<Home_Model> brand_list = new ArrayList<>();
     ProgressDialog ringProgressDialog;
-    ProgressDialog progressBar;
+    static ProgressDialog progressBar;
     ImageView home_fotter, search_footer, logo,profile_footer;
     ImageView ivAddPhoto, ivAddReview, ivShareReview;
     RelativeLayout photosAndVideos;
-    private int progressBarStatus = 0;
+    private static int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
-    private long fileSize = 0;
+    private static long fileSize = 0;
     Drawer_Fragment drawerFragment = new Drawer_Fragment();
     Bitmap bitmap;
     private CallbackManager callbackManager;
@@ -136,11 +142,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ImageView post_picture;
     String fileType;
     LinearLayout layoutmap;
+    static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        activity=MapsActivity.this;
         forCommentPos=-1;
         noOfComments="0";
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -231,7 +239,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ivShareReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onShareResult(view, brandNAme, brandId);
+                onShareResult(view, brandNAme, brandId,brandPic);
             }
         });
         ivAddReview.setOnClickListener(new View.OnClickListener() {
@@ -244,15 +252,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ivAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postDialog("","","");
+                if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                    if (Build.VERSION.SDK_INT > 22) {
+
+                        requestPermissions(new String[]{Manifest.permission
+                                        .WRITE_EXTERNAL_STORAGE},
+                                10);
+
+                    }
+
+                } else {
+                    Intent intent = new Intent();
+                    intent.setType("*/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    //   intent.setSelector(Intent.getIntent().removeCategory(););
+
+                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), 2);
+                    postDialog("","","");
+                }
+                //postDialog("","","");
             }
         });
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(MapsActivity.this, HomeScreen.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                /*Intent intent1 = new Intent(MapsActivity.this, HomeScreen.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish();
-                startActivity(intent1);
+                startActivity(intent1);*/
             }
         });
         brand_name.setText(brandNAme);
@@ -287,11 +314,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String pp = pref.getString("profile_pic","");
                 String strname = pref.getString("user_name","");
                 String strid = pref.getString("user_id","");
-                Intent intent= new Intent(MapsActivity.this, Account_Settings.class);
+                Intent intent = new Intent(MapsActivity.this, User_Profile.class);
                 intent.putExtra("username", strname);
-                intent.putExtra("userProfile",pp);
-                intent.putExtra("userID",strid);
-                finish();
+                intent.putExtra("userID", strid);
                 startActivity(intent);
             }
         });
@@ -334,18 +359,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }else {
             sydney = new LatLng(Float.parseFloat(brandLatitude), Float.parseFloat(brandLongitude));
         }
-
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
     }
 
     @Override
     public void processFinish(String output) {
-        try {
+       /* try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         // close the progress bar dialog
         progressBar.dismiss();
         // }
@@ -381,19 +405,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
-    public void onShareResult(View view, String brandName, String reviewId) {
+    public void onShareResult(View view, String brandName, String reviewId,String brandLogo) {
 
         final ShareDialog shareDialog = new ShareDialog(MapsActivity.this);
         if (ShareDialog.canShow(ShareLinkContent.class)) {
+            SharePhoto photo = new SharePhoto.Builder().setImageUrl(Uri.parse(End_Points.IMAGE_RREVIEW_URL+brandLogo))
+                    .setUserGenerated(true).build();
+            ShareOpenGraphObject object;
 
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                object = new ShareOpenGraphObject.Builder()
+                        .putString("og:type", "article")
+                        .putString("og:url", "http://demo.cybussolutions.com/bataado")
+                        .putString("og:title", brandName)
+                        .putString("og:description", "BataaDo - Rate & Review")
+                        .putPhoto("og:image", photo)
+                        //.putString("books:isbn", "0-553-57340-3")
+                        .build();
+
+            // Create an action
+            ShareOpenGraphAction action = new ShareOpenGraphAction.Builder()
+                    .setActionType("news.reads")
+                    .putObject("article", object)
+                    .build();
+
+            ShareOpenGraphContent linkContent = new ShareOpenGraphContent.Builder()
+                    .setPreviewPropertyName("article")
+                    .setAction(action)
+                    .build();
+            shareDialog.registerCallback(HomeScreen.callbackManager,callback);
+            shareDialog.show(linkContent, ShareDialog.Mode.AUTOMATIC);
+           /* ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(brandName)
                     .setContentDescription("Bataado")
                     .setContentUrl(Uri.parse("http://bataado.cybussolutions.com"))
                     .setImageUrl(Uri.parse(End_Points.IMAGE_RREVIEW_URL + "logo.png"))
                     .build();
             shareDialog.registerCallback(callbackManager,callback);
-            shareDialog.show(linkContent, ShareDialog.Mode.AUTOMATIC);
+            shareDialog.show(linkContent, ShareDialog.Mode.AUTOMATIC);*/
         }
 
 
@@ -451,41 +499,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     UploadFile uploadFile = new UploadFile();
                     uploadFile.delegate = MapsActivity.this;
                     uploadFile.execute(path);
-                    progressBar = new ProgressDialog(MapsActivity.this);
-                    progressBar.setCancelable(false);
-                    progressBar.setMessage("Uploading ...");
-                    progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    progressBar.setProgress(0);
-                    progressBar.setMax(100);
-                    progressBar.show();
-                    progressBarStatus = 0;
-                    fileSize = 0;
-                    new Thread(new Runnable() {
-                        public void run() {
-                            while (progressBarStatus < 99) {
-                                // performing operation
-                                progressBarStatus = doOperation();
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                // Updating the progress bar
-                                progressBarHandler.post(new Runnable() {
-                                    public void run() {
-                                        progressBar.setProgress(progressBarStatus);
-                                    }
-                                });
-                            }
-                            // performing operation if file is downloaded,
-                        /*if (progressBarStatus >= 100) {
-                            // sleeping for 1 second after operation completed
-                            try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
-                            // close the progress bar dialog
-                            progressBar.dismiss();
-                        }*/
-                        }
-                    }).start();
+
                 }
                     /*ringProgressDialog = ProgressDialog.show(Detail_brand.this, "Please wait ...", "Uploading File ...", true);
                     ringProgressDialog.setCancelable(false);
@@ -674,7 +688,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         parseJson(response);
 
-                        home_addapter = new Home_Addapter(MapsActivity.this, brand_list);
+                        home_addapter = new Home_Addapter(MapsActivity.this, brand_list,"");
 
                         review_list.setAdapter(home_addapter);
 
@@ -995,6 +1009,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         }
                                     })
                                     .show();
+                        }else if(response.equals("You cannot post review")){
+                            Toast.makeText(MapsActivity.this,"Brand owner cannot post review",Toast.LENGTH_LONG).show();
                         } else {
 
                             new SweetAlertDialog(MapsActivity.this, SweetAlertDialog.SUCCESS_TYPE)
@@ -1076,7 +1092,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    static class  UploadFile extends AsyncTask<String,Void,String>
+    static class  UploadFile extends AsyncTask<String,Integer,String> implements RecoverySystem.ProgressListener
     {
         public callBack delegate = null;
         private String upLoadServerUri = null;
@@ -1086,10 +1102,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected void onPreExecute() {
 
-
+            progressBar = new ProgressDialog(activity);
+            progressBar.setCancelable(false);
+            progressBar.setMessage("Uploading ...");
+            progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressBar.setProgress(0);
+            progressBar.setSecondaryProgress(0);
+            progressBar.setMax(100);
+            progressBar.show();
+            progressBarStatus = 0;
+            fileSize = 0;
             super.onPreExecute();
         }
-
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBar.setProgress(values[0]);
+            progressBar.setSecondaryProgress(values[0]);
+            //  super.onProgressUpdate(values);
+        }
         @Override
         protected String doInBackground(String... strings) {
             String fileName = strings[0];
@@ -1104,7 +1135,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             int maxBufferSize = 1 * 1024 * 1024;
             File sourceFile = new File(fileName);
 
-
+            long filesize=sourceFile.length();
+            filesize = filesize / 1024;
             if (!sourceFile.isFile()) {
 
                 //  dialog.dismiss();
@@ -1148,14 +1180,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     // read file and write it into form...
                     bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
+                    long total = 0;
                     while (bytesRead > 0) {
 
                         dos.write(buffer, 0, bufferSize);
                         bytesAvailable = fileInputStream.available();
                         bufferSize = Math.min(bytesAvailable, maxBufferSize);
                         bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
+                        total += bytesRead;
+                        long dataUploaded = ((total / 1024) * 100 ) /filesize ;
+                        publishProgress((int) dataUploaded);
                     }
 
                     // send multipart form data necesssary after file data...
@@ -1202,6 +1236,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             delegate.processFinish(s);
         }
 
+        @Override
+        public void onProgress(int progress) {
+            progressBar.setProgress(progress);
+        }
     }
     @Override
     protected void onResume() {

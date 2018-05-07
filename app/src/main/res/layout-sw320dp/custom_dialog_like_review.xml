@@ -68,9 +68,13 @@
         android:layout_marginBottom="10dp"
         android:layout_marginStart="1dp"
         android:id="@+id/heart_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:circle_end_color="@android:color/holo_blue_dark"
+        app:circle_start_color="@android:color/holo_blue_bright"
+        app:dots_primary_color="@android:color/holo_blue_light"
+        app:dots_secondary_color="@android:color/holo_blue_dark"
         app:icon_size="22dp"
-        app:anim_scale_factor="3"
-        app:icon_type="heart" />
+        app:like_drawable="@drawable/useful_on"
+        app:unlike_drawable="@drawable/useful_off" />
 </LinearLayout>

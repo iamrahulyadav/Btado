@@ -110,10 +110,9 @@ public class SearchScreen extends AppCompatActivity {
                 String pp = pref.getString("profile_pic","");
                 String strname = pref.getString("user_name","");
                 String strid = pref.getString("user_id","");
-                Intent intent= new Intent(SearchScreen.this, Account_Settings.class);
+                Intent intent = new Intent(SearchScreen.this, User_Profile.class);
                 intent.putExtra("username", strname);
-                intent.putExtra("userProfile",pp);
-                intent.putExtra("userID",strid);
+                intent.putExtra("userID", strid);
                 startActivity(intent);
             }
         });

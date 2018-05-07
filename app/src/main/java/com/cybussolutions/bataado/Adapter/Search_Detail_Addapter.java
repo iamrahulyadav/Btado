@@ -61,10 +61,10 @@ public class Search_Detail_Addapter extends ArrayAdapter<String>
         LayoutInflater inflater = context.getLayoutInflater();
         rowView = inflater.inflate(R.layout.search_detail_row,null,true);
 
-        TextView place = (TextView) rowView.findViewById(R.id.Page_home);
-        TextView adress = (TextView) rowView.findViewById(R.id.adress);
-        RatingBar rating = (RatingBar) rowView.findViewById(R.id.ratingBar_home);
-        ImageView profile_pic = (ImageView) rowView.findViewById(R.id.profile_image);
+        TextView place = rowView.findViewById(R.id.Page_home);
+        TextView adress = rowView.findViewById(R.id.adress);
+        RatingBar rating = rowView.findViewById(R.id.ratingBar_home);
+        ImageView profile_pic = rowView.findViewById(R.id.profile_image);
 
         Home_Model  home_model = arraylist.get(position);
         place.setText(home_model.getBrand_name());

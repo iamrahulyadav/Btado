@@ -6,14 +6,12 @@
     android:background="@drawable/review"
     android:layout_margin="5dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
         android:layout_width="60dp"
         android:layout_height="80dp"
         android:src="@drawable/profile3"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/black"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="10dp"

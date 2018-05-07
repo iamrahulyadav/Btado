@@ -90,7 +90,7 @@ public class Comments extends AppCompatActivity {
                     .into(profileImage);
         }
         else {
-            if (pp.startsWith("https://graph.facebook.com/")) {
+            if (pp.startsWith("https://graph.facebook.com/") || pp.startsWith("https://fb-s-b-a.akamaihd.net/")|| pp.startsWith("https://scontent.xx.fbcdn.net/") || pp.startsWith("http://graph.facebook.com/")) {
                 Picasso.with(Comments.this)
                         .load(pp)
                         .resize(150, 150)

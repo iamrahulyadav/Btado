@@ -286,12 +286,14 @@ public class Find_Friends extends AppCompatActivity{
                     public void onResponse(String response)
                     {
                         ringProgressDialog.dismiss();
-                        if(!response.equals("0") && !response.equals("-1") && !response.equals("-2")){
+                        if(!response.equals("0") && !response.equals("-1") && !response.equals("-2") && !response.equals("-3")){
                             Toast.makeText(Find_Friends.this,"Friend Request Sent to "+response+" Users",Toast.LENGTH_LONG).show();
                         }else if(response.equals("-1")){
-                            Toast.makeText(Find_Friends.this,"You are already friend with this user",Toast.LENGTH_LONG).show();
+                            Toast.makeText(Find_Friends.this,"Friend request already sent.",Toast.LENGTH_LONG).show();
                         }else if(response.equals("-2")){
                             Toast.makeText(Find_Friends.this,"Friend request to own email cannot be sent.",Toast.LENGTH_LONG).show();
+                        }else if(response.equals("-3")){
+                            Toast.makeText(Find_Friends.this,"You are already friend with this user",Toast.LENGTH_LONG).show();
                         }
 
                     }

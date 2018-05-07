@@ -26,7 +26,7 @@ public class FieldValidator {
         if (error.equalsIgnoreCase("")) {
             return true;
         } else {
-            new DialogBox(context, error, "", "Error");
+            new DialogBox(context, error, "Error", "Alert");
             return false;
         }
     }
