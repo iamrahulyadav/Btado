@@ -678,7 +678,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 }
                             }
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
