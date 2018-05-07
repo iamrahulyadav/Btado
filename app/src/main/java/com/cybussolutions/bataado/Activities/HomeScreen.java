@@ -906,14 +906,13 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                        if (i==0){
 
 
-                           if (ActivityCompat.checkSelfPermission(HomeScreen.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                           if(ActivityCompat.checkSelfPermission(HomeScreen.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(HomeScreen.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
 
                                if (Build.VERSION.SDK_INT > 22) {
 
-                                   requestPermissions(new String[]{Manifest.permission
-                                                   .CAMERA},
-                                           11);
+                                   requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},4);
 
+                                   alertDialog.dismiss();
                                }
 
                            }else {
@@ -1044,19 +1043,20 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
 
-        if (requestCode == 11 ||
+        if (requestCode == 4 ||
                 requestCode == 10) {
             if (grantResults.length > 0 && grantResults[0] ==
                     PackageManager.PERMISSION_GRANTED) {
                 //The External Storage Write Permission is granted to you... Continue your left job...
-                if (requestCode == 11) {
+                    if (requestCode==4){
 
-                    try {
-                        camera.takePicture();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
+                        try {
+                            camera.takePicture();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                 }
+
                 if (requestCode == 10) {
 
                     Intent intent = new Intent();
