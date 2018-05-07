@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -45,13 +47,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.RatingBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -69,19 +69,13 @@ import com.cybussolutions.bataado.Helper.CircleTransform;
 import com.cybussolutions.bataado.Model.Brands_Model;
 import com.cybussolutions.bataado.Model.DrawerPojo;
 import com.cybussolutions.bataado.Model.Home_Model;
-import com.cybussolutions.bataado.Model.Search_Model;
 import com.cybussolutions.bataado.Network.CheckConnection;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
-import com.cybussolutions.bataado.Utils.DialogBox;
 import com.cybussolutions.bataado.Utils.callBack;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
+import com.mindorks.paracamera.Camera;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -94,14 +88,12 @@ import java.io.FileInputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -115,6 +107,8 @@ import static com.cybussolutions.bataado.Utils.FilePath.isMediaDocument;
 
 public class HomeScreen extends AppCompatActivity implements callBack {
     Toolbar toolbar;
+    // Create global camera reference in an activity or fragment
+    Camera camera;
     Drawer_Fragment drawerFragment = new Drawer_Fragment();
     Home_Addapter home_addapter = null;
     ListView home_list;
@@ -133,6 +127,9 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     Button Post;
     AutoCompleteTextView etPost,etBrandOrCategory;
     ListView itemList;
+
+
+
     private ArrayAdapter<String> listAdapter;
     ImageView profile_image,searchIcon,notifIcon;
     CircleImageView topReviewer;
@@ -172,6 +169,21 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+
+
+
+
+// Build the camera
+        camera = new Camera.Builder()
+                .resetToCorrectOrientation(true)// it will rotate the camera bitmap to the correct orientation from meta data
+                .setTakePhotoRequestCode(1)
+                .setDirectory("pics")
+                .setName("ali" + System.currentTimeMillis())
+                .setImageFormat(Camera.IMAGE_JPEG)
+                .setCompression(75)
+                .setImageHeight(1000)// it will try to achieve this height as close as possible maintaining the aspect ratio;
+                .build(this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
@@ -549,6 +561,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
     }
 
+
     private void ShowDialog() {
         LayoutInflater layoutInflater = LayoutInflater.from(HomeScreen.this);
         View customView = layoutInflater.inflate(R.layout.custom_dialog_enter_location, null);
@@ -883,26 +896,71 @@ public class HomeScreen extends AppCompatActivity implements callBack {
        addPicVideo.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               if (ActivityCompat.checkSelfPermission(HomeScreen.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                   if (Build.VERSION.SDK_INT > 22) {
+               CharSequence options[] = new CharSequence[]{"Camera","Storage"};
+               AlertDialog.Builder builder= new AlertDialog.Builder(activity);
+               builder.setItems(options, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
 
-                       requestPermissions(new String[]{Manifest.permission
-                                       .WRITE_EXTERNAL_STORAGE},
-                               10);
+                       if (i==0){
 
+
+                           if (ActivityCompat.checkSelfPermission(HomeScreen.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                               if (Build.VERSION.SDK_INT > 22) {
+
+                                   requestPermissions(new String[]{Manifest.permission
+                                                   .CAMERA},
+                                           11);
+
+                               }
+
+                           }else {
+                               // Call the camera takePicture method to open the existing camera
+                               try {
+                                   camera.takePicture();
+                               }catch (Exception e){
+                                   e.printStackTrace();
+                               }
+                           }
+
+
+                       }
+                       if (i==1){
+
+
+                           if (ActivityCompat.checkSelfPermission(HomeScreen.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                               if (Build.VERSION.SDK_INT > 22) {
+
+                                   requestPermissions(new String[]{Manifest.permission
+                                                   .WRITE_EXTERNAL_STORAGE},
+                                           10);
+
+                               }
+
+                           } else {
+                               Intent intent = new Intent();
+                               intent.setType("*/*");
+                               intent.setAction(Intent.ACTION_GET_CONTENT);
+                               //   intent.setSelector(Intent.getIntent().removeCategory(););
+
+                               startActivityForResult(Intent.createChooser(intent, "Complete action using"), 2);
+                           }
+                       }
                    }
+               }).show();
 
-               } else {
-                   Intent intent = new Intent();
-                   intent.setType("*/*");
-                   intent.setAction(Intent.ACTION_GET_CONTENT);
-                   //   intent.setSelector(Intent.getIntent().removeCategory(););
 
-                   startActivityForResult(Intent.createChooser(intent, "Complete action using"), 2);
-               }
+
+
+
+
            }
        });
+
+
 
        postReview.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -979,6 +1037,41 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
         }
     }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+
+        if (requestCode == 11 ||
+                requestCode == 10) {
+            if (grantResults.length > 0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED) {
+                //The External Storage Write Permission is granted to you... Continue your left job...
+                if (requestCode == 11) {
+
+                    try {
+                        camera.takePicture();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                if (requestCode == 10) {
+
+                    Intent intent = new Intent();
+                    intent.setType("*/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    //   intent.setSelector(Intent.getIntent().removeCategory(););
+
+                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), 2);
+                }
+            } else {
+                Toast.makeText(HomeScreen.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1051,8 +1144,50 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
 
         }
+        if(requestCode == Camera.REQUEST_TAKE_PHOTO){
+            Bitmap bitmap = camera.getCameraBitmap();
+            if(bitmap != null) {
+                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+               // bitmap = BitmapFactory.decodeFile(imagepath);
+
+                String path = "";
+                path=getPathFromURI(tempUri);
+                /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                    path = getPath(HomeScreen.this, tempUri);
+                }*/
+                if (path != null && !path.equals("")) {
+                    fileName = path.split("/");
+                    file = fileName[fileName.length - 1];
+                    File file = new File(path);
+                }
+              //  String picturePath=getPathFromURI(tempUri);
+                UploadFile uploadFile = new UploadFile();
+                uploadFile.delegate = HomeScreen.this;
+                uploadFile.execute(path);
+            }else{
+                Toast.makeText(this.getApplicationContext(),"Picture not taken!",Toast.LENGTH_SHORT).show();
+            }
+        }
 
 
+
+    }
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        //    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        //  inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
     static class  UploadFile extends AsyncTask<String,Integer,String> implements RecoverySystem.ProgressListener
     {
