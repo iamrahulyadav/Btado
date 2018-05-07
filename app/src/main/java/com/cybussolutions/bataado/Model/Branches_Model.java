@@ -4,6 +4,7 @@ package com.cybussolutions.bataado.Model;
  * Created by Rizwan Jillani on 03-Apr-18.
  */
 public class Branches_Model {
+
     String branchName;
     String branchAddress;
 
