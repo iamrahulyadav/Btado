@@ -4,17 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.Time;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,47 +46,30 @@ import com.cybussolutions.bataado.Utils.Blur;
 import com.cybussolutions.bataado.Utils.DialogBox;
 import com.cybussolutions.bataado.Utils.TimeAgo;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookActivity;
 import com.facebook.FacebookCallback;
-import com.facebook.FacebookDialog;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.internal.FacebookWebFallbackDialog;
 import com.facebook.share.Sharer;
-import com.facebook.share.model.AppInviteContent;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.ShareOpenGraphAction;
 import com.facebook.share.model.ShareOpenGraphContent;
 import com.facebook.share.model.ShareOpenGraphObject;
 import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
-import com.facebook.share.widget.AppInviteDialog;
 import com.facebook.share.widget.ShareDialog;
-import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.github.rtoshiro.view.video.FullscreenVideoLayout;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -143,6 +120,7 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         View rowView;
+
 
         final LayoutInflater inflater = context.getLayoutInflater();
         rowView = inflater.inflate(R.layout.row_home, null, true);

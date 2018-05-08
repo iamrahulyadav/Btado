@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -165,6 +166,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
     static Activity activity;
     Calendar now;
     String currentMonth;
+    int countView = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,6 +213,30 @@ public class HomeScreen extends AppCompatActivity implements callBack {
                 false);
 
         home_list.addHeaderView(header);
+
+
+
+        home_list.setOnScrollListener(new AbsListView.OnScrollListener() {
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // Do nothing
+            }
+
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if(firstVisibleItem > countView  || firstVisibleItem < countView){
+                    countView = firstVisibleItem;
+                    Toast.makeText(HomeScreen.this,
+                            "counter = " + countView,
+                            Toast.LENGTH_LONG).show();
+                }
+
+
+
+            }
+        });
+
+
         mySwipeRefreshLayout = findViewById(R.id.swiperefresh);
         //   spinnerValues = new String[]{};
         mySwipeRefreshLayout.setOnRefreshListener(
