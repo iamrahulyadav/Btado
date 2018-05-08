@@ -315,7 +315,9 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
                         @Override
                         public void onSuccess() {*/
                             Picasso.with(context)
-                                    .load(End_Points.IMAGE_RREVIEW_URL + home_model.getFile_path())// image url goes here
+                                    .load(End_Points.IMAGE_RREVIEW_URL + home_model.getFile_path())
+                                    .resize(400,200)
+                                    .centerCrop()// image url goes here
                                     .placeholder(R.drawable.progress_animation)
                                     .into(ivPhoto);
                        /* }
