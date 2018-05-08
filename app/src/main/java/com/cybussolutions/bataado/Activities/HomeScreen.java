@@ -73,6 +73,7 @@ import com.cybussolutions.bataado.Model.Home_Model;
 import com.cybussolutions.bataado.Network.CheckConnection;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
+import com.cybussolutions.bataado.Utils.DialogBox;
 import com.cybussolutions.bataado.Utils.callBack;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -1520,30 +1521,15 @@ public class HomeScreen extends AppCompatActivity implements callBack {
             @Override
             public void onErrorResponse(VolleyError error) {
                 ringProgressDialog.dismiss();
-                if (error instanceof NoConnectionError) {
-                    new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection ! ")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
+                if (error instanceof NoConnectionError)
+                {
+                    new DialogBox(HomeScreen.this, "No Internet Connection !", "Error",
+                            "Error");
+                }
+                else if (error instanceof TimeoutError) {
 
-                                }
-                            })
-                            .show();
-                } else if (error instanceof TimeoutError) {
-                    new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(HomeScreen.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         }) {
@@ -1587,32 +1573,16 @@ public class HomeScreen extends AppCompatActivity implements callBack {
             public void onErrorResponse(VolleyError error) {
                 ringProgressDialog.dismiss();
                 getNotifications();
-                if (error instanceof NoConnectionError) {
+                if (error instanceof NoConnectionError)
+                {
+                    if(list.size()>0)
+                    new DialogBox(HomeScreen.this, "No Internet Connection !", "Error",
+                            "Error");
+                }
+                else if (error instanceof TimeoutError) {
 
-                    new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection ! ")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
-                } else if (error instanceof TimeoutError) {
-
-                    new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(HomeScreen.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         }) {
@@ -2358,32 +2328,15 @@ public class HomeScreen extends AppCompatActivity implements callBack {
             public void onErrorResponse(VolleyError error) {
 
                 ringProgressDialog.dismiss();
-                if (error instanceof NoConnectionError) {
-                    new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
+                if (error instanceof NoConnectionError)
+                {
+                    new DialogBox(HomeScreen.this, "No Internet Connection !", "Error",
+                            "Error");
+                }
+                else if (error instanceof TimeoutError) {
 
-                                }
-                            })
-                            .show();
-                } else if (error instanceof TimeoutError) {
-
-
-                    new SweetAlertDialog(HomeScreen.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(HomeScreen.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         }) {
