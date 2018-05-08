@@ -227,9 +227,7 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
                 if(firstVisibleItem > countView){
                     countView = firstVisibleItem;
-//                    Toast.makeText(HomeScreen.this,
-//                            "counter = " + countView,
-//                            Toast.LENGTH_LONG).show();
+                   Toast.makeText(HomeScreen.this, "counter = " + countView, Toast.LENGTH_LONG).show();
                 }
 
 

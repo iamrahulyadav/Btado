@@ -1080,24 +1080,79 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         addPicVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                CharSequence options[] = new CharSequence[]{"Camera","Storage"};
+                AlertDialog.Builder builder= new AlertDialog.Builder(activity);
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                    if (Build.VERSION.SDK_INT > 22) {
+                        if (i==0){
 
-                        requestPermissions(new String[]{Manifest.permission
-                                        .WRITE_EXTERNAL_STORAGE},
-                                10);
 
+                            if(ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+
+                                if (Build.VERSION.SDK_INT > 22) {
+
+                                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},4);
+
+                                }
+
+                            }else {
+                                // Call the camera takePicture method to open the existing camera
+                                try {
+                                    camera.takePicture();
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                //postDialog("","","");
+                            }
+
+
+                        }
+                        if (i==1){
+
+
+                            if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                                if (Build.VERSION.SDK_INT > 22) {
+
+                                    requestPermissions(new String[]{Manifest.permission
+                                                    .WRITE_EXTERNAL_STORAGE},
+                                            10);
+
+                                }
+
+                            } else {
+                                Intent intent = new Intent();
+                                intent.setType("*/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                //   intent.setSelector(Intent.getIntent().removeCategory(););
+
+                                startActivityForResult(Intent.createChooser(intent, "Complete action using"), 2);
+
+                               // postDialog("","","");
+                            }
+                        }
                     }
-
-                } else {
-                    Intent intent = new Intent();
-                    intent.setType("*/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    //   intent.setSelector(Intent.getIntent().removeCategory(););
-
-                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), 2);
-                }
+                }).show();
+//                if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//
+//                    if (Build.VERSION.SDK_INT > 22) {
+//
+//                        requestPermissions(new String[]{Manifest.permission
+//                                        .WRITE_EXTERNAL_STORAGE},
+//                                10);
+//
+//                    }
+//
+//                } else {
+//                    Intent intent = new Intent();
+//                    intent.setType("*/*");
+//                    intent.setAction(Intent.ACTION_GET_CONTENT);
+//                    //   intent.setSelector(Intent.getIntent().removeCategory(););
+//
+//                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), 2);
+//                }
             }
         });
 
