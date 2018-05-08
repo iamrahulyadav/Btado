@@ -219,13 +219,13 @@ public class HomeScreen extends AppCompatActivity implements callBack {
 
         home_list.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // Do nothing
+               
             }
 
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
 
-                if(firstVisibleItem > countView  || firstVisibleItem < countView){
+                if(firstVisibleItem > countView){
                     countView = firstVisibleItem;
 //                    Toast.makeText(HomeScreen.this,
 //                            "counter = " + countView,
