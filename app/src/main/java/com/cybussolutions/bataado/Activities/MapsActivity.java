@@ -3,6 +3,7 @@ package com.cybussolutions.bataado.Activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.Service;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,6 +26,7 @@ import android.os.Handler;
 import android.os.RecoverySystem;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -146,6 +152,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LinearLayout layoutmap;
     static Activity activity;
     Camera camera;
+   /* LocationManager locationManager;
+    Location loc;
+    ArrayList<String> permissions = new ArrayList<>();
+    ArrayList<String> permissionsToRequest;
+    ArrayList<String> permissionsRejected = new ArrayList<>();
+    boolean isGPS = false;
+    boolean isNetwork = false;
+    boolean canGetLocation = true;
+    private final static int ALL_PERMISSIONS_RESULT = 101;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -392,7 +409,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
+
+
     }
+
 
 
     /**
@@ -1223,7 +1243,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(request);
     }
-
 
     static class  UploadFile extends AsyncTask<String,Integer,String> implements RecoverySystem.ProgressListener
     {

@@ -143,7 +143,6 @@ public class Home_Addapter extends ArrayAdapter<String> implements CallbackManag
         ivShare = rowView.findViewById(R.id.share_image_view);
         ivPhoto = rowView.findViewById(R.id.image);
         ivComments = rowView.findViewById(R.id.comment_image_view);
-
         final Home_Model home_model = arraylist.get(position);
         username.setText(home_model.getFirstname() + " " + home_model.getLastname());
         place.setText(home_model.getBrand_name());

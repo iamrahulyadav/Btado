@@ -20,7 +20,7 @@
                 android:text="Text Here...."
                 android:textSize="26sp"
                 android:layout_width="match_parent"
-                android:textColor="#0E0A4F"
+                android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 />
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="Ok"
-                android:background="#459300"
+                android:background="@drawable/full_button_style_green"
                 android:layout_below="@+id/additionalButton"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
