@@ -201,11 +201,13 @@ public class SignUp extends AppCompatActivity {
                 ringProgressDialog.dismiss();
                 if (error instanceof NoConnectionError)
                 {
-                    Toast.makeText(getApplication(),"No Internet Connection", Toast.LENGTH_SHORT).show();
+                    new DialogBox(SignUp.this, "No Internet Connection !", "Error",
+                            "Error");
                 }
-                else if (error instanceof TimeoutError)
-                {
-                    Toast.makeText(getApplication(), "Connection TimeOut! Please check your internet connection.", Toast.LENGTH_SHORT).show();
+                else if (error instanceof TimeoutError) {
+
+                    new DialogBox(SignUp.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         })

@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/friends_list"
             android:divider="@android:color/transparent"
-            android:dividerHeight="3.0sp"
+            android:dividerHeight="5.5sp"
             android:layout_below="@+id/sendMail"
             android:layout_above="@+id/fotter"
             android:layout_marginLeft="5dp"

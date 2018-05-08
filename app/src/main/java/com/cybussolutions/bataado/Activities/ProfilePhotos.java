@@ -43,6 +43,7 @@ import com.cybussolutions.bataado.Fragments.Drawer_Fragment;
 import com.cybussolutions.bataado.Model.SpacePhoto;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
+import com.cybussolutions.bataado.Utils.DialogBox;
 import com.mindorks.paracamera.Camera;
 
 import org.json.JSONArray;
@@ -309,31 +310,15 @@ public class ProfilePhotos extends AppCompatActivity {
                 //   loading.dismiss();
                 ringProgressDialog.dismiss();
                 String message = null;
-                if (error instanceof NoConnectionError) {
+                if (error instanceof NoConnectionError)
+                {
+                    new DialogBox(ProfilePhotos.this, "No Internet Connection !", "Error",
+                            "Error");
+                }
+                else if (error instanceof TimeoutError) {
 
-                    new SweetAlertDialog(ProfilePhotos.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("check your internet connection")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-                                }
-                            })
-                            .show();
-                } else if (error instanceof TimeoutError) {
-
-                    new SweetAlertDialog(ProfilePhotos.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection TimeOut! Please check your internet connection.")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(ProfilePhotos.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
 
@@ -381,31 +366,15 @@ public class ProfilePhotos extends AppCompatActivity {
                 //   loading.dismiss();
                 ringProgressDialog.dismiss();
                 String message = null;
-                if (error instanceof NoConnectionError) {
+                if (error instanceof NoConnectionError)
+                {
+                    new DialogBox(ProfilePhotos.this, "No Internet Connection !", "Error",
+                            "Error");
+                }
+                else if (error instanceof TimeoutError) {
 
-                    new SweetAlertDialog(ProfilePhotos.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("check your internet connection")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-                                }
-                            })
-                            .show();
-                } else if (error instanceof TimeoutError) {
-
-                    new SweetAlertDialog(ProfilePhotos.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection TimeOut! Please check your internet connection.")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(ProfilePhotos.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
 
@@ -455,32 +424,13 @@ public class ProfilePhotos extends AppCompatActivity {
 
                 if (error instanceof NoConnectionError)
                 {
-                    new SweetAlertDialog(ProfilePhotos.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection ! ")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(ProfilePhotos.this, "No Internet Connection !", "Error",
+                            "Error");
                 }
-                else if (error instanceof TimeoutError)
-                {
+                else if (error instanceof TimeoutError) {
 
-                    new SweetAlertDialog(ProfilePhotos.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(ProfilePhotos.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         })

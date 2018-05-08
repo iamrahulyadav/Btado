@@ -1189,32 +1189,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onErrorResponse(VolleyError error) {
 
                 ringProgressDialog.dismiss();
-                if (error instanceof NoConnectionError) {
-                    new SweetAlertDialog(MapsActivity.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
+                if (error instanceof NoConnectionError)
+                {
+                    new DialogBox(MapsActivity.this, "No Internet Connection !", "Error",
+                            "Error");
+                }
+                else if (error instanceof TimeoutError) {
 
-                                }
-                            })
-                            .show();
-                } else if (error instanceof TimeoutError) {
-
-
-                    new SweetAlertDialog(MapsActivity.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(MapsActivity.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         }) {

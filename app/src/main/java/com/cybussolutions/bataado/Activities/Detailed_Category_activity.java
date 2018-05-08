@@ -31,6 +31,7 @@ import com.cybussolutions.bataado.Adapter.Search_Detail_Addapter;
 import com.cybussolutions.bataado.Model.Home_Model;
 import com.cybussolutions.bataado.Network.End_Points;
 import com.cybussolutions.bataado.R;
+import com.cybussolutions.bataado.Utils.DialogBox;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -211,32 +212,13 @@ public class Detailed_Category_activity extends AppCompatActivity {
 
                 if (error instanceof NoConnectionError)
                 {
-                    new SweetAlertDialog(getApplication(), SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection ! ")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(Detailed_Category_activity.this, "No Internet Connection !", "Error",
+                            "Error");
                 }
-                else if (error instanceof TimeoutError)
-                {
+                else if (error instanceof TimeoutError) {
 
-                    new SweetAlertDialog(getApplication(), SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();
+                    new DialogBox(Detailed_Category_activity.this, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         })

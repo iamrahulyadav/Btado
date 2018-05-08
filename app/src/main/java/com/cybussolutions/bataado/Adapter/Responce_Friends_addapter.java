@@ -199,32 +199,13 @@ public class Responce_Friends_addapter extends ArrayAdapter<String>
 
                 if (error instanceof NoConnectionError)
                 {
-                   /* new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("No Internet Connection")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();*/
+                    new DialogBox(context, "No Internet Connection !", "Error",
+                            "Error");
                 }
                 else if (error instanceof TimeoutError) {
 
-
-                  /*  new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setConfirmText("OK").setContentText("Connection Time Out Error")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismiss();
-
-                                }
-                            })
-                            .show();*/
+                    new DialogBox(context, "Connection Time Out Error", "Error",
+                            "Error");
                 }
             }
         })
